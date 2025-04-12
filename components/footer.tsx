@@ -4,7 +4,7 @@ import { SocialNav } from "./SocialNav"
 
 export default function Footer() {
   return (
-    <footer className=" pb-[88px] h-[255px]">
+    <footer className=" pb-[60px] h-[255px]">
       <div className="container mx-auto">
         <div className="grid grid-cols-1 md:flex justify-between ">
           <div className="md:w-[460px]">

@@ -2,6 +2,7 @@ import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { SocialNav } from "@/components/SocialNav"
 import { Input } from "@/components/ui/input"
+import Link from "next/link"
 
 export default function LoginPage() {
   return (
@@ -17,13 +18,15 @@ export default function LoginPage() {
         />
         <div className="absolute top-6 left-6 ">
           <div className="flex flex-col">
-            <Image
-              src="/logo.png"
-              alt="logo"
-              className="object-cover"
-              width={98}
-              height={52}
-            />
+            <Link href="/">
+              <Image
+                src="/logo.png"
+                alt="logo"
+                className="object-cover"
+                width={98}
+                height={52}
+              />
+            </Link>
           </div>
         </div>
       </div>
@@ -33,13 +36,15 @@ export default function LoginPage() {
         <div className="max-w-96">
           <div className="md:hidden text-black font-bold">
             <div className="flex flex-col">
-              <Image
-                src="/logo.png"
-                alt="logo"
-                className="object-cover"
-                width={98}
-                height={52}
-              />
+              <Link href="/">
+                <Image
+                  src="/logo.png"
+                  alt="logo"
+                  className="object-cover"
+                  width={98}
+                  height={52}
+                />
+              </Link>
             </div>
           </div>
 

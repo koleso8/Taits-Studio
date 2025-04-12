@@ -84,10 +84,13 @@ export default function Header() {
             <Search color="#353535" />
           </div>
         </div>
-        <Button className="ml-9 bg-YELLOW hover:bg-yellow-400 text-black text-base font-semibold h-10 px-4 rounded-md">
-          <LogIn color="#353535" strokeWidth={3} />
-          {isLogedIn ? "УВІЙТИ" : "ВИЙТИ"}
-        </Button>
+        <Link href="/login">
+          <Button className="ml-9 bg-YELLOW hover:bg-yellow-400 text-black text-base font-semibold h-10 px-4 rounded-md">
+            <LogIn color="#353535" strokeWidth={3} />
+
+            {isLogedIn ? "УВІЙТИ" : "ВИЙТИ"}
+          </Button>
+        </Link>
       </div>
     </header>
   );

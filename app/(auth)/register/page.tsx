@@ -23,13 +23,15 @@ export default function RegisterPage() {
         />
         <div className="absolute top-6 left-6 ">
           <div className="flex flex-col">
-            <Image
-              src="/logo.png"
-              alt="logo"
-              className="object-cover"
-              width={98}
-              height={52}
-            />
+            <Link href="/">
+              <Image
+                src="/logo.png"
+                alt="logo"
+                className="object-cover"
+                width={98}
+                height={52}
+              />
+            </Link>
           </div>
         </div>
       </div>
@@ -39,13 +41,15 @@ export default function RegisterPage() {
         <div className="w-96">
           <div className="md:hidden text-black font-bold mb-8">
             <div className="flex flex-col">
-              <Image
-                src="/logo.png"
-                alt="logo"
-                className="object-cover"
-                width={98}
-                height={52}
-              />
+              <Link href="/">
+                <Image
+                  src="/logo.png"
+                  alt="logo"
+                  className="object-cover"
+                  width={98}
+                  height={52}
+                />
+              </Link>
             </div>
           </div>
 

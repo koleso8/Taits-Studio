@@ -18,9 +18,11 @@ export default function HomePage() {
               ЗАМОВЛЯЙ ПРОФЕСІЙНИЙ ДИЗАЙН, ЩО ВИДІЛИТЬ ТВІЙ БІЗНЕС СЕРЕД КОНКУРЕНТІВ!
             </p>
           </div>
-          <Button className="bg-transparent hover:bg-white/20 border-2 border-white text-white text-xl font-bold px-6 py-3 rounded-lg mb-8">
-            БЕЗКОШТОВНА КОНСУЛЬТАЦІЯ
-          </Button>
+          <Link href="/consultation">
+            <Button className="bg-transparent hover:bg-white/20 border-2 border-white text-white text-xl font-bold px-6 py-3 rounded-lg mb-8">
+              БЕЗКОШТОВНА КОНСУЛЬТАЦІЯ
+            </Button>
+          </Link>
           <SocialNav white={true} />
         </Card>
 
