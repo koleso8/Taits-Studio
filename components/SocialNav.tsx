@@ -15,7 +15,7 @@ export const SocialNav: React.FC<Props> = ({ className, white = false }) => {
                 <div
                     className={cn(
                         'w-9 h-9 p-1 rounded-full flex items-center justify-center group transition-all ease-linear duration-300',
-                        white ? 'bg-white hover:bg-transparent ' : 'bg-GRAY hover:bg-transparent'
+                        white ? 'bg-white hover:bg-transparent ' : 'bg-GRAY hover:bg-transparent border-2 border-GRAY'
                     )}
                 >
                     <Facebook
@@ -30,7 +30,7 @@ export const SocialNav: React.FC<Props> = ({ className, white = false }) => {
                 <div
                     className={cn(
                         'w-9 h-9 p-1 rounded-full flex items-center justify-center group transition-all ease-linear duration-300',
-                        white ? 'bg-white hover:bg-transparent' : 'bg-GRAY hover:bg-transparent'
+                        white ? 'bg-white hover:bg-transparent' : 'bg-GRAY hover:bg-transparent border-2 border-GRAY'
                     )}
                 >
                     <Instagram
@@ -45,7 +45,7 @@ export const SocialNav: React.FC<Props> = ({ className, white = false }) => {
                 <div
                     className={cn(
                         'w-9 h-9 p-1 rounded-full flex items-center justify-center group transition-all ease-linear duration-300',
-                        white ? 'bg-white hover:bg-transparent' : 'bg-GRAY hover:bg-transparent'
+                        white ? 'bg-white hover:bg-transparent' : 'bg-GRAY hover:bg-transparent border-2 border-GRAY'
                     )}
                 >
                     <Linkedin

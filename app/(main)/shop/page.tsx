@@ -7,6 +7,7 @@ import { PageTemp } from "@/components/PageTemp"
 import { Card } from "@/components/Card"
 
 export default function ShopPage() {
+
   return (
 
     <div className="">
@@ -80,6 +81,12 @@ export default function ShopPage() {
         <div className="flex-1">
           <div className="grid grid-cols-1 md:grid-cols-2  gap-6 transition-all ease-linear duration-200">
             {/* Product 1 */}
+            {/* {products.map((product) => (
+              <Link href={product.id} className="block">
+                <Image src={product.image} alt={product.title} width={300} height={196} className="shadow-xl hover:shadow-2xl hover:scale-105  transition-all ease-linear duration-200" />
+              </Link>
+
+            ))} */}
             <Link href="/shop/summer-banner" className="block">
               <Image src={"/summer.png"} alt={"summer"} width={300} height={196} className="shadow-xl hover:shadow-2xl hover:scale-105  transition-all ease-linear duration-200" />
             </Link>
