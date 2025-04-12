@@ -11,7 +11,7 @@ interface Props {
 export const SocialNav: React.FC<Props> = ({ className, white = false }) => {
     return (
         <nav className={cn('flex items-center justify-center gap-4', className)}>
-            <Link href="/asd">
+            <Link href="https://www.instagram.com/tai.tss/">
                 <div
                     className={cn(
                         'w-9 h-9 p-1 rounded-full flex items-center justify-center group transition-all ease-linear duration-300',
@@ -26,7 +26,7 @@ export const SocialNav: React.FC<Props> = ({ className, white = false }) => {
                     />
                 </div>
             </Link>
-            <Link href="/asd">
+            <Link href="https://www.instagram.com/tai.tss/">
                 <div
                     className={cn(
                         'w-9 h-9 p-1 rounded-full flex items-center justify-center group transition-all ease-linear duration-300',
@@ -41,7 +41,7 @@ export const SocialNav: React.FC<Props> = ({ className, white = false }) => {
                     />
                 </div>
             </Link>
-            <Link href="/asd">
+            <Link href="https://www.instagram.com/tai.tss/">
                 <div
                     className={cn(
                         'w-9 h-9 p-1 rounded-full flex items-center justify-center group transition-all ease-linear duration-300',

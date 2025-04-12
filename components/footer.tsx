@@ -20,9 +20,9 @@ export default function Footer() {
             <h3 className="text-lg font-bold mb-3">КОНТАКТИ</h3>
             <p className="text-sm text-gray-600 mb-1">КАТЕРИНА ТАІЦЬКА</p>
             <p className="text-sm text-gray-600 mb-6">KATERYNATSITSKA@GMAIL.COM</p>
-            <Button className="w-[335px] h-12 px-4  border-2 border-[GRAY] rounded-lg text-GRAY text-base font-bold transition-all ease-linear duration-300 bg-white hover:bg-GRAY hover:text-white">
+            <Link href={'/consultation'} className="w-[335px] h-12 border-2 border-[GRAY] rounded-lg text-GRAY text-base font-bold transition-all ease-linear duration-300 bg-white hover:bg-GRAY hover:text-white px-6 py-4">
               ЗАПИСАТИСЬ НА КОНСУЛЬТАЦІЮ
-            </Button>
+            </Link>
           </div>
         </div>
       </div>

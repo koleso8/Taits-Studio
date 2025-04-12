@@ -8,6 +8,48 @@ import { Card } from "@/components/Card"
 
 export default function ShopPage() {
 
+  const products = [
+    {
+      id: 1,
+      title: 'Банер реклама літніх розваг',
+      category: 'Графіка',
+      author: 'tait.tss',
+      isFree: true,
+      price: 0,
+      format: 'PNG',
+      dimensions: '1512 x 982 px',
+      size: '904 KB',
+      image: '/summer.png',
+      downloads: 0
+    },
+    {
+      id: 2,
+      title: 'Банер реклама газового напою',
+      category: 'Графіка',
+      author: 'tait.tss',
+      isFree: false,
+      price: 50,
+      format: 'PNG',
+      dimensions: '1512 x 982 px',
+      size: '1.48 MB',
+      image: '/strawberry.png',
+      downloads: 0
+    },
+    {
+      id: 3,
+      title: 'Шаблон для банеру або логотипу',
+      category: 'Графіка',
+      author: 'tait.tss',
+      isFree: true,
+      price: 0,
+      format: 'PNG',
+      dimensions: '1512 x 982 px',
+      size: '1.48 MB',
+      image: '/template.png',
+      downloads: 0
+    },
+  ]
+
   return (
 
     <div className="">
@@ -81,25 +123,12 @@ export default function ShopPage() {
         <div className="flex-1">
           <div className="grid grid-cols-1 md:grid-cols-2  gap-6 transition-all ease-linear duration-200">
             {/* Product 1 */}
-            {/* {products.map((product) => (
-              <Link href={product.id} className="block">
+            {products.map((product) => (
+              <Link key={product.id} href={`/shop/${product.id}`} className="block">
                 <Image src={product.image} alt={product.title} width={300} height={196} className="shadow-xl hover:shadow-2xl hover:scale-105  transition-all ease-linear duration-200" />
               </Link>
 
-            ))} */}
-            <Link href="/shop/summer-banner" className="block">
-              <Image src={"/summer.png"} alt={"summer"} width={300} height={196} className="shadow-xl hover:shadow-2xl hover:scale-105  transition-all ease-linear duration-200" />
-            </Link>
-
-            {/* Product 2 */}
-            <Link href="/shop/strawberry" className="block">
-              <Image src={"/strawberry.png"} alt={"strawberry"} width={300} height={196} className="shadow-xl hover:shadow-2xl hover:scale-105  transition-all ease-linear duration-200" />
-            </Link>
-
-            {/* Product 3 */}
-            <Link href="/shop/your-text" className="block">
-              <Image src={"/template.png"} alt={"template"} width={300} height={196} className="shadow-xl hover:shadow-2xl hover:scale-105  transition-all ease-linear duration-200" />
-            </Link>
+            ))}
 
 
           </div>
