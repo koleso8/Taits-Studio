@@ -15,13 +15,13 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
     format: "PNG",
     dimensions: "1512 x 982 px",
     size: "904 KB",
-    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-CVc3RiVNWL9Oeb68L83g9uKqV9J9M7.png",
+    image: "/summer.png",
   }
 
   return (
     <div className="min-h-screen bg-pink-50">
 
-      <main className="container mx-auto px-4 py-8">
+      <main className="">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Product Image */}
           <div className="bg-cyan-500 rounded-lg overflow-hidden shadow-md">

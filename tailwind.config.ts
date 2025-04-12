@@ -9,7 +9,13 @@ const config: Config = {
     "*.{js,ts,jsx,tsx,mdx}"
   ],
   theme: {
-  	extend: {
+	  extend: {
+			backgroundImage: {
+        'custom-png': "url('/bg.png')",
+      },
+		  minHeight: {
+			page: "calc(100vh - 355px)",
+		},
 		fontFamily: {
 			helvetica: ['Helvetica', 'sans-serif'],
 		  },

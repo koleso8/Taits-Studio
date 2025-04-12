@@ -48,8 +48,9 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="uk">
-      <body className={`${helvetica.className} font-helvetica`}>
-        {children}</body>
+      <body className={` font-helvetica`}>
+        {children}
+      </body>
     </html>
   );
 }

@@ -2,137 +2,81 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import { Card } from "@/components/Card"
+import { SocialNav } from "@/components/SocialNav"
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-pink-50">
+    <div className="">
 
-      <main>
+      <main >
         {/* Hero Section */}
-        <section className="mx-4 my-6 rounded-lg overflow-hidden">
-          <div className="bg-gradient-to-r from-pink-400 to-yellow-300 p-8 text-center text-white">
-            <h1 className="text-2xl md:text-3xl font-bold mb-2">ПЕРЕТВОРЮЄМО ІДЕЇ В</h1>
-            <h1 className="text-2xl md:text-3xl font-bold mb-4">УНІКАЛЬНИЙ ДИЗАЙН!</h1>
-            <p className="text-sm max-w-2xl mx-auto mb-8">
-              Ми - команда професіоналів, які допоможуть втілити ваші ідеї в реальність. Наша місія - створювати
-              унікальний дизайн для кожного.
+        <Card className="pt-12 pb-7 flex flex-col items-center mb-[130px]">
+          <div className="w-[520px]">
+            <h1 className="text-2xl md:text-[40px]  mb-8 leading-[50px]">ПЕРЕТВОРЮЄМО ІДЕЇ В УНІКАЛЬНИЙ ДИЗАЙН!</h1>
+            <p className="text-base max-w-2xl mx-auto mb-16">
+              МИ — КОМАНДА ПРОФЕСІОНАЛІВ, ЯКІ СТВОРЮЮТЬ СТИЛЬНІ, ФУНКЦІОНАЛЬНІ ТА ЕФЕКТИВНІ ДИЗАЙНИ ДЛЯ ВАШОГО БІЗНЕСУ
             </p>
-            <Button className="bg-transparent hover:bg-white/20 border border-white text-white text-sm px-6 py-2 rounded-md">
-              БЕЗКОШТОВНА КОНСУЛЬТАЦІЯ
-            </Button>
-            <div className="flex justify-center mt-6 space-x-4">
-              <Link href="#" className="text-white">
-                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                  </svg>
-                </div>
-              </Link>
-              <Link href="#" className="text-white">
-                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                  </svg>
-                </div>
-              </Link>
-              <Link href="#" className="text-white">
-                <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path>
-                  </svg>
-                </div>
-              </Link>
-            </div>
           </div>
-        </section>
+          <Button className="bg-transparent hover:bg-white/20 border-2 border-white text-white text-xl font-bold px-6 py-3 rounded-lg mb-8">
+            БЕЗКОШТОВНА КОНСУЛЬТАЦІЯ
+          </Button>
+          <SocialNav white={true} />
+        </Card>
 
         {/* About Us Section */}
-        <section className="mx-4 my-10">
+        <section className="flex flex-col items-center text-GRAY w-[834px] mx-auto mb-28">
           <h2 className="text-xl font-bold mb-4">ПРО НАС</h2>
-          <p className="text-sm text-gray-700 mb-6 max-w-4xl">
-            Студія, що працює - саме чесно та особливо фахово. Ми - команда професіоналів, які допоможуть втілити ваші
-            ідеї в реальність. Наша місія - створювати унікальний дизайн для кожного. Наші дизайнери мають значний
-            досвід роботи над розробкою логотипів і фірмового стилю, веб-дизайну, ілюстрацій та інших видів графічного
-            дизайну. Ми забезпечуємо якісний результат для клієнтів, які очікують та добиваються автентичного підходу до
-            своїх проектів. Ми пропонуємо якісну роботу, індивідуальний підхід та найкращі рішення для реалізації ваших
-            ідей!
+          <p className="text-xl text-gray-700  font-normal text-center">
+            "Креатив що працює" – наша місія та основний принцип. Ми – команда професійних дизайнерів, які створюють унікальні графічні рішення для бізнесу. Наша платформа надає повний спектр послуг: від розробки логотипів і UI/UX-дизайну до готових шаблонів, які можна адаптувати під ваші потреби. Ми забезпечуємо зручний інтерфейс для співпраці між клієнтами та дизайнерами, автоматизуємо процеси управління замовленнями та гарантуємо високу якість виконання проєктів.<br /> З нами ви отримаєте не просто дизайн – а ефективний інструмент для розвитку вашого бренду!
           </p>
         </section>
 
         {/* Testimonials Section */}
-        <section className="mx-4 my-10">
-          <h2 className="text-xl font-bold mb-6 text-center">ВІДГУКИ НАШИХ КЛІЄНТІВ</h2>
+        <section className=" mb-[108px]">
+          <h2 className="text-[40px] font-bold mb-14 text-center">ВІДГУКИ НАШИХ КЛІЄНТІВ</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-pink-100 p-6 rounded-lg">
-              <p className="text-sm text-gray-700 mb-4">
-                "Дякую команді Taits Studio за чудову роботу! Логотип, який вони створили для мого бізнесу, перевершив
-                усі мої очікування. Професійний підхід та увага до деталей - це те, що відрізняє їх від інших."
+            <div className="shadow-[inset_0_4px_14px_0_rgba(0,0,0,0.25)] bg-[rgba(255,255,255,0.31)] w-[286] rounded-2xl p-7 h-80 flex flex-col justify-between">
+              <p className="text-sm text-gray-700 ">
+                Замовляв редизайн сайту для свого бренду, і результат перевершив усі очікування! Команда врахувала всі побажання, запропонувала круті ідеї та зробила стильний і сучасний дизайн. Рекомендую!
               </p>
-              <p className="text-sm font-semibold">ОЛЕКСАНДР МЕЛЬНИК</p>
+              <div className="text-right">
+                <p className="text-sm font-semibold">ОЛЕКСАНДР МЕЛЬНИК</p>
+                <p className="text-[#adadad]">12/01/2025</p>
+              </div>
             </div>
-            <div className="bg-pink-100 p-6 rounded-lg">
-              <p className="text-sm text-gray-700 mb-4">
-                "Дуже задоволена співпрацею з дизайнерами Taits Studio. Вони не тільки втілили мої ідеї, а й
-                запропонували креативні рішення, які зробили мій проект ще кращим. Рекомендую всім!"
+            <div className="shadow-[inset_0_4px_14px_0_rgba(0,0,0,0.25)] bg-[rgba(255,255,255,0.31)] w-[286] rounded-2xl p-7 h-80 flex flex-col justify-between">
+              <p className="text-sm text-gray-700 ">
+                Дуже задоволена співпрацею! Дизайнери не лише створили красивий макет, але й зробили його максимально зручним для користувачів. Окремий плюс – швидкий зворотний зв'язок і професійний підхід.
               </p>
-              <p className="text-sm font-semibold">КАТЕРИНА КОВАЛЬЧУК</p>
+              <div className="text-right">
+                <p className="text-sm font-semibold">МАРИНА КОВАЛЬЧУК</p>
+                <p className="text-[#adadad]">30/01/2025</p>
+              </div>
             </div>
-            <div className="bg-pink-100 p-6 rounded-lg">
-              <p className="text-sm text-gray-700 mb-4">
-                "Я вражений якістю роботи команди Taits Studio. Вони створили для мене унікальний дизайн, який повністю
-                відповідає моїм потребам та очікуванням. Буду звертатися ще!"
+            <div className="shadow-[inset_0_4px_14px_0_rgba(0,0,0,0.25)] bg-[rgba(255,255,255,0.31)] w-[286] rounded-2xl p-7 h-80 flex flex-col justify-between">
+              <p className="text-sm text-gray-700 ">
+                Потрібен був мінімалістичний логотип для стартапу, і хлопці впоралися просто відмінно. Робота виконана швидко, якісно і точно за брифом. Дякую за вашу творчість!
               </p>
-              <p className="text-sm font-semibold">АНДРІЙ ТКАЧУК</p>
+              <div className="text-right">
+                <p className="text-sm font-semibold">АНДРІЙ САВЧУК</p>
+                <p className="text-[#adadad]">26/02/2025</p>
+              </div>
             </div>
           </div>
         </section>
 
         {/* CTA Section */}
-        <section className="mx-4 my-10">
-          <div className="bg-gradient-to-r from-yellow-300 to-pink-400 p-8 rounded-lg text-center">
-            <h2 className="text-xl font-bold text-white mb-1">ЗАМОВИТИ ДИЗАЙН ЛОГОТИПУ</h2>
-            <h2 className="text-xl font-bold text-white mb-4">ПРЯМО ЗАРАЗ!</h2>
-            <p className="text-sm text-white mb-6 max-w-2xl mx-auto">
-              Ми створимо унікальний логотип, що відображатиме індивідуальність вашого бренду.
-            </p>
-            <Button className="bg-white hover:bg-gray-100 text-pink-500 text-sm px-6 py-2 rounded-md">ЗАМОВИТИ</Button>
-          </div>
-        </section>
+        <Card className=" p-8 flex flex-col items-start mb-[168px]">
+          <h2 className="text-[32px] font-bold text-white mb-1">ЗАМОВЛЯЙ ДИЗАЙН ЛОГОТИПУ</h2>
+          <h2 className="text-[32px] font-bold text-white mb-3">ПРЯМО ЗАРАЗ!</h2>
+          <p className="text-xl text-white mb-8 max-w-[642px] text-left ">
+            Ми створимо унікальний логотип, що відображатиме індивідуальність вашого бренду.
+          </p>
+          <Button className="font-bold bg-transparent text-white hover:bg-white hover:text-pink-500 text-sm px-6 py-[10px] border-2 border-white p-3 transition-all ease-linear duration-300 rounded-xl">ЗАМОВИТИ</Button>
+        </Card>
       </main>
 
-      <Footer />
     </div>
   )
 }

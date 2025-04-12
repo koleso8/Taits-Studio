@@ -22,7 +22,7 @@ export default function Header() {
   const isLogedIn = true;
 
   return (
-    <header className="flex items-center justify-between px-4 py-3 bg-white">
+    <header className="flex items-center justify-between px-4 py-3 bg-white h-[100px]">
       <div className="flex items-center">
         <Link href="/" className="mr-40">
           <div className="mr-auto">
