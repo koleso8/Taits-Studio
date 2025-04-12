@@ -1,20 +1,19 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { Checkbox } from "@/components/ui/checkbox"
-import { Button } from "@/components/ui/button"
-import { Plus } from "lucide-react"
-import { getProducts, type Product } from "../../actions/product-actions"
-import { AddProductForm } from "@/app/(auth)/(designer)/addTemplate/page"
-import { Card } from "@/components/Card"
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import { getProducts, type Product } from "../../actions/product-actions";
+import { Card } from "@/components/Card";
 
 export default function ShopPage() {
   // State for products
-  const [products, setProducts] = useState<Product[]>([])
-  const [loading, setLoading] = useState(true)
-  const [showAddForm, setShowAddForm] = useState(false)
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showAddForm, setShowAddForm] = useState(false);
 
   // Filter states
   const [filters, setFilters] = useState({
@@ -23,23 +22,38 @@ export default function ShopPage() {
     originalDesigns: false,
     free: false,
     paid: false,
-  })
+  });
 
   // Fetch products on component mount
   useEffect(() => {
     async function loadProducts() {
       try {
-        const allProducts = await getProducts()
-        setProducts(allProducts)
+        // Получаем дефолтные продукты с сервера
+        const defaultProducts = await getProducts();
+
+        // Получаем пользовательские продукты из localStorage
+        const storedProducts = localStorage.getItem("user-products");
+        let userProducts: Product[] = [];
+
+        if (storedProducts) {
+          try {
+            userProducts = JSON.parse(storedProducts);
+          } catch (error) {
+            console.error("Failed to parse stored products:", error);
+          }
+        }
+
+        // Объединяем дефолтные и пользовательские продукты
+        setProducts([...defaultProducts, ...userProducts]);
       } catch (error) {
-        console.error("Failed to load products:", error)
+        console.error("Failed to load products:", error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
 
-    loadProducts()
-  }, [])
+    loadProducts();
+  }, []);
 
   // Handle filter changes
   const handleFilterChange = (filterName: string) => {
@@ -50,22 +64,22 @@ export default function ShopPage() {
         allDesigns: !filters.allDesigns,
         templates: false,
         originalDesigns: false,
-      })
+      });
     } else if (filterName === "templates" || filterName === "originalDesigns") {
       // When a specific design type is checked, uncheck "All Designs"
       setFilters({
         ...filters,
         [filterName]: !filters[filterName as keyof typeof filters],
         allDesigns: false,
-      })
+      });
     } else {
       // For price filters, just toggle the specific filter
       setFilters({
         ...filters,
         [filterName]: !filters[filterName as keyof typeof filters],
-      })
+      });
     }
-  }
+  };
 
   // Filter products based on selected filters
   const filteredProducts = products.filter((product) => {
@@ -73,32 +87,23 @@ export default function ShopPage() {
     const designTypeMatch =
       filters.allDesigns ||
       (filters.templates && product.isTemplate) ||
-      (filters.originalDesigns && !product.isTemplate)
+      (filters.originalDesigns && !product.isTemplate);
 
     // Filter by price
     const priceMatch =
       (!filters.free && !filters.paid) || // If no price filter is selected, show all
       (filters.free && product.isFree) ||
-      (filters.paid && !product.isFree)
+      (filters.paid && !product.isFree);
 
-    return designTypeMatch && priceMatch
-  })
+    return designTypeMatch && priceMatch;
+  });
 
   return (
     <div className="">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Магазин</h1>
-        <Button onClick={() => setShowAddForm(!showAddForm)} variant="outline">
-          <Plus className="mr-2 h-4 w-4" />
-          {showAddForm ? "Сховати форму" : "Додати товар"}
-        </Button>
-      </div>
 
-      {showAddForm && (
-        <div className="mb-8">
-          <AddProductForm />
-        </div>
-      )}
+      </div>
 
       <div className="flex flex-col md:flex-row gap-6">
         {/* Filter Sidebar */}
@@ -192,8 +197,8 @@ export default function ShopPage() {
                       alt={product.title}
                       width={300}
                       height={196}
-                      className="shadow-xl hover:shadow-2xl hover:scale-105 transition-all ease-linear duration-200 w-full h-auto object-cover rounded-md"
-                      unoptimized={product.image.startsWith("http")} // For external images
+                      className="shadow-xl hover:shadow-2xl hover:scale-105 transition-all ease-linear duration-200 w-full h-auto object-cover rounded-md max-h-[206px]"
+                      unoptimized={product.image.startsWith("http")} // Для внешних изображений
                     />
                     <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-200 flex items-end justify-start p-4 opacity-0 group-hover:opacity-100">
                       <div className="bg-white bg-opacity-90 p-2 rounded-md">
@@ -215,5 +220,5 @@ export default function ShopPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

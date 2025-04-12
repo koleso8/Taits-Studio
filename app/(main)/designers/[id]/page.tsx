@@ -51,7 +51,7 @@ export default function ProductDetailPage({ }) {
                   </li>
                 </ul>
               </div>
-              <Link href={`/desi  gners/${designer.id}`} className="text-GRAY font-bold  h-10 py-6  flex items-center justify-center  rounded-lg bg-YELLOW  hover:bg-yellow-300 transition-all ease-linear duration-300">ЗАПИСАТИСЬ НА КОНСУЛЬТАЦІЮ</Link>
+              <Link href={`/designers/${designer.id}`} className="text-GRAY font-bold  h-10 py-6  flex items-center justify-center  rounded-lg bg-YELLOW  hover:bg-yellow-300 transition-all ease-linear duration-300">ЗАПИСАТИСЬ НА КОНСУЛЬТАЦІЮ</Link>
             </div>
           </div>
         </div>

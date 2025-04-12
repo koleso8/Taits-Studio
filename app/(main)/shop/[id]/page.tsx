@@ -1,40 +1,58 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import Image from "next/image"
-import { ArrowLeft, Download } from "lucide-react"
-import { useParams, useRouter } from "next/navigation"
-import Link from "next/link"
-import { getProducts, type Product } from "../../../actions/product-actions"
+import { useState, useEffect } from "react";
+import Image from "next/image";
+import { ArrowLeft, Download } from "lucide-react";
+import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
+import { getProducts, type Product } from "../../../actions/product-actions";
 
 export default function ProductDetailPage() {
-  const { id } = useParams<{ id: string }>()
-  const router = useRouter()
-  const [product, setProduct] = useState<Product | null>(null)
-  const [loading, setLoading] = useState(true)
+  const { id } = useParams<{ id: string }>();
+  const router = useRouter();
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadProduct() {
       try {
-        const products = await getProducts()
-        const foundProduct = products.find((p) => p.id === Number.parseInt(id as string))
-        setProduct(foundProduct || null)
+        // Получаем дефолтные продукты с сервера
+        const defaultProducts = await getProducts();
+
+        // Получаем пользовательские продукты из localStorage
+        const storedProducts = localStorage.getItem("user-products");
+        let userProducts: Product[] = [];
+
+        if (storedProducts) {
+          try {
+            userProducts = JSON.parse(storedProducts);
+          } catch (error) {
+            console.error("Failed to parse stored products:", error);
+          }
+        }
+
+        // Объединяем дефолтные и пользовательские продукты
+        const allProducts = [...defaultProducts, ...userProducts];
+
+        // Находим продукт по ID
+        const foundProduct = allProducts.find((p) => p.id === Number.parseInt(id as string));
+        setProduct(foundProduct || null);
       } catch (error) {
-        console.error("Failed to load product:", error)
+        console.error("Failed to load product:", error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     }
 
-    loadProduct()
-  }, [id])
+    loadProduct();
+  }, [id]);
 
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pink-500"></div>
       </div>
-    )
+    );
   }
 
   if (!product) {
@@ -48,7 +66,7 @@ export default function ProductDetailPage() {
           <ArrowLeft className="mr-2" /> МАГАЗИН
         </Link>
       </div>
-    )
+    );
   }
 
   return (
@@ -117,5 +135,5 @@ export default function ProductDetailPage() {
         </div>
       </div>
     </main>
-  )
+  );
 }
