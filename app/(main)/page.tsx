@@ -6,7 +6,6 @@ import Footer from "@/components/footer"
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-pink-50">
-      <Header activePage="home" />
 
       <main>
         {/* Hero Section */}

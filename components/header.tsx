@@ -1,17 +1,25 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import Image from "next/image"
-import { LogIn, Search } from "lucide-react"
+'use client'
 
-interface HeaderProps {
-  activePage?: "home" | "services" | "shop" | "designers" | "messenger"
-}
-
-export default function Header({ activePage }: HeaderProps) {
-  const isLogedIn = true
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import Image from "next/image";
+import { LogIn, Search } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 
+
+export default function Header() {
+  const pathname = usePathname();
+
+
+  const activePage = (pathname === "/" ? "home" :
+    pathname.startsWith("/services") ? "services" :
+      pathname.startsWith("/shop") ? "shop" :
+        pathname.startsWith("/designers") ? "designers" :
+          pathname.startsWith("/messenger") ? "messenger" : "home");
+
+  const isLogedIn = true;
 
   return (
     <header className="flex items-center justify-between px-4 py-3 bg-white">
@@ -30,53 +38,57 @@ export default function Header({ activePage }: HeaderProps) {
         <nav className="hidden md:flex gap-2 items-center">
           <Link
             href="/"
-            className={`text-base px-4 py-2 font-bold ${activePage === "home" ? "bg-ROZA text-white    rounded-xl" : "text-GRAY"}`}
+            className={`text-base px-4 py-2 font-bold ${activePage === "home" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
+              }`}
           >
             ГОЛОВНА
           </Link>
           <Link
             href="/services"
-            className={`text-base px-4 py-2 font-bold ${activePage === "services" ? "bg-ROZA text-white    rounded-xl" : "text-GRAY"}`}
+            className={`text-base px-4 py-2 font-bold ${activePage === "services" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
+              }`}
           >
             ПОСЛУГИ
           </Link>
           <Link
             href="/shop"
-            className={`text-base px-4 py-2 font-bold ${activePage === "shop" ? "bg-ROZA text-white    rounded-xl" : "text-GRAY"}`}
+            className={`text-base px-4 py-2 font-bold ${activePage === "shop" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
+              }`}
           >
             МАГАЗИН
           </Link>
           <Link
             href="/designers"
-            className={`text-base px-4 py-2 font-bold ${activePage === "designers" ? "bg-ROZA text-white    rounded-xl" : "text-GRAY"}`}
+            className={`text-base px-4 py-2 font-bold ${activePage === "designers" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
+              }`}
           >
             ДИЗАЙНЕРИ
           </Link>
           <Link
             href="/messenger"
-            className={`text-base px-4 py-2 font-bold ${activePage === "messenger" ? "bg-ROZA text-white    rounded-xl" : "text-GRAY"}`}
+            className={`text-base px-4 py-2 font-bold ${activePage === "messenger" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
+              }`}
           >
             МЕСЕНДЖЕР
           </Link>
         </nav>
       </div>
-      <div className="flex items-center ">
+      <div className="flex items-center">
         <div className="relative">
           <Input
             type="search"
             placeholder="Пошук..."
-            className="w-64 h-10 px-4 ml-9  border border-GRAY rounded-lg placeholder:text-[#adadad] text-GRAY"
+            className="w-64 h-10 px-4 ml-9 border border-GRAY rounded-lg placeholder:text-[#adadad] text-GRAY"
           />
           <div className="absolute inset-y-0 right-0 flex items-center pr-2">
             <Search color="#353535" />
           </div>
         </div>
-        <Button className=" ml-9 bg-YELLOW hover:bg-yellow-400 text-black text-base font-semibold h-10 px-4 rounded-md">
+        <Button className="ml-9 bg-YELLOW hover:bg-yellow-400 text-black text-base font-semibold h-10 px-4 rounded-md">
           <LogIn color="#353535" strokeWidth={3} />
-          {isLogedIn ? "УВІЙТИ" :
-            "ВИЙТИ"}
+          {isLogedIn ? "УВІЙТИ" : "ВИЙТИ"}
         </Button>
       </div>
     </header>
-  )
+  );
 }

@@ -6,7 +6,6 @@ import Footer from "@/components/footer"
 export default function ShopPage() {
   return (
     <div className="min-h-screen bg-pink-50">
-      <Header activePage="shop" />
 
       <main className="container mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-6">
