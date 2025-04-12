@@ -1,7 +1,6 @@
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import Link from "next/link"
+import { SocialNav } from "@/components/SocialNav"
 
 export default function LoginPage() {
   return (
@@ -29,8 +28,8 @@ export default function LoginPage() {
       </div>
 
       {/* Right side - Login form */}
-      <div className="w-full md:w-1/2 flex items-center justify-center px-8 ">
-        <div className="w-96">
+      <div className="w-full md:w-1/2 flex items-center justify-center px-20 ">
+        <div className="">
           <div className="md:hidden text-black font-bold">
             <div className="flex flex-col">
               <Image
@@ -46,36 +45,24 @@ export default function LoginPage() {
           <div className="h-screen pt-64 pb-20 flex flex-col justify-between">
 
             <div className="">
-              <h1 className="text-center  font-bold text-GRAY text-4xl tracking-tight">УВІЙДІТЬ В СВІЙ ОБЛІКОВИЙ ЗАПИС</h1>
-
-              <form className="flex flex-col mt-10 gap-3 ">
-                <Input
-                  type="email"
-                  placeholder="Електронна пошта"
-                  className="h-12 px-4  border-2 border-GRAY rounded-lg placeholder:text-[#adadad] text-GRAY"
-                />
-                <Input type="password" placeholder="Пароль" className="h-12 px-4 border-2 border-GRAY rounded-lg placeholder:text-[#adadad] text-GRAY" />
+              <h1 className="text-center  font-bold text-GRAY text-4xl tracking-tight mb-2">ДАВАЙТЕ ПОГОВОРИМО ПРО ВАШЕ ЗАМОВЛЕННЯ</h1>
+              <p className="text-base text-center text-GRAY font-[300] mb-10">Розкажіть нам про ваші вимоги до проекту щоб ми змогли підібрати вам ідеального дизайнера для вашого запиту</p>
+              <form className="flex flex-col gap-3 ">
+                <textarea
+                  placeholder="Ваше повідомлення"
+                  className="h-44 px-4 py-2 border-2 border-GRAY rounded-lg resize-y placeholder:text-[#adadad] text-GRAY"
+                ></textarea>
                 <Button
                   type="submit"
                   className="w-full h-12 bg-[#fee685] text-GRAY hover:bg-yellow-300 text-xl font-bold rounded-md p-3 transition-all ease-linear duration-300"
                 >
-                  УВІЙТИ
+                  ЗРОБИТИ ЗАМОВЛЕННЯ
                 </Button>
               </form>
 
             </div>
 
-            <div className=" text-center">
-              <p className="text-base text-GRAY font-[300]">Немає облікового запису? Приєднуйтесь до нас!</p>
-              <Link href="/register">
-                <Button
-                  variant="outline"
-                  className="mt-2 w-full h-12 px-4  border-2 border-[GRAY] rounded-lg text-GRAY text-xl font-bold transition-all ease-linear duration-300"
-                >
-                  ЗАРЕЄСТРУВАТИСЬ
-                </Button>
-              </Link>
-            </div>
+            <SocialNav />
           </div>
         </div>
       </div>

@@ -10,7 +10,13 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+		fontFamily: {
+			helvetica: ['Helvetica', 'sans-serif'],
+		  },
   		colors: {
+			ROZA: '#f163b8',
+			GRAY: '#353535',
+			YELLOW: '#fee685',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
