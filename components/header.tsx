@@ -58,17 +58,35 @@ export default function Header() {
   return (
     <header className="flex items-center justify-between px-4 py-3 bg-white h-[100px]">
       <div className="flex items-center flex-1 justify-between">
-        <Link href="/" className="mr-40">
-          <div className="mr-auto">
-            <Image
-              src="/logo_color.png"
-              alt="logo"
-              className="min-w-[134px]"
-              width={134}
-              height={75}
-            />
-          </div>
-        </Link>
+        {(!currentUser || currentUser?.userType === "client") && (
+          <Link href="/" className="">
+            <div className="mr-40">
+              <Image
+                src="/logo_color.png"
+                alt="logo"
+                className="min-w-[134px]"
+                width={134}
+                height={75}
+              />
+            </div>
+          </Link>
+        )}
+        {currentUser?.userType === "designer" && (
+          <Link
+            href={`/designers/${currentUser.id}`}>
+            <div className="mr-40">
+              <Image
+                src="/logo_color.png"
+                alt="logo"
+                className="min-w-[134px]"
+                width={134}
+                height={75}
+              />
+            </div>
+          </Link>
+
+        )}
+
         <nav className="hidden md:flex gap-2 items-center">
 
           {/* ПРОФІЛЬ доступен только дизайнерам */}
@@ -82,14 +100,14 @@ export default function Header() {
             </Link>
           )}
           {/* ГОЛОВНА доступна всем */}
-          {
+          {(!currentUser || currentUser?.userType === "client") && (
             <Link
               href="/"
               className={`text-base px-4 py-2 font-bold ${activePage === "home" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
                 }`}
             >
               ГОЛОВНА
-            </Link>}
+            </Link>)}
 
           {/* ПОСЛУГИ доступна только неавторизованным пользователям или клиентам */}
           {(!currentUser || currentUser?.userType === "client") && (
