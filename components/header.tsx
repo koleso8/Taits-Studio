@@ -70,41 +70,6 @@ export default function Header() {
           </div>
         </Link>
         <nav className="hidden md:flex gap-2 items-center">
-          {/* ГОЛОВНА доступна всем */}
-          <Link
-            href="/"
-            className={`text-base px-4 py-2 font-bold ${activePage === "home" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
-              }`}
-          >
-            ГОЛОВНА
-          </Link>
-
-          {/* ПОСЛУГИ доступна всем */}
-          <Link
-            href="/services"
-            className={`text-base px-4 py-2 font-bold ${activePage === "services" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
-              }`}
-          >
-            ПОСЛУГИ
-          </Link>
-
-          {/* МАГАЗИН доступен всем (как было) */}
-          <Link
-            href="/shop"
-            className={`text-base px-4 py-2 font-bold ${activePage === "shop" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
-              }`}
-          >
-            МАГАЗИН
-          </Link>
-
-          {/* ДИЗАЙНЕРИ доступны всем */}
-          <Link
-            href="/designers"
-            className={`text-base px-4 py-2 font-bold ${activePage === "designers" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
-              }`}
-          >
-            ДИЗАЙНЕРИ
-          </Link>
 
           {/* ПРОФІЛЬ доступен только дизайнерам */}
           {currentUser?.userType === "designer" && (
@@ -116,6 +81,48 @@ export default function Header() {
               ПРОФІЛЬ
             </Link>
           )}
+          {/* ГОЛОВНА доступна всем */}
+          {
+            <Link
+              href="/"
+              className={`text-base px-4 py-2 font-bold ${activePage === "home" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
+                }`}
+            >
+              ГОЛОВНА
+            </Link>}
+
+          {/* ПОСЛУГИ доступна только неавторизованным пользователям или клиентам */}
+          {(!currentUser || currentUser?.userType === "client") && (
+            <Link
+              href="/services"
+              className={`text-base px-4 py-2 font-bold ${activePage === "services" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
+                }`}
+            >
+              ПОСЛУГИ
+            </Link>
+          )}
+
+          {/* МАГАЗИН доступен всем (как было) */}
+          <Link
+            href="/shop"
+            className={`text-base px-4 py-2 font-bold ${activePage === "shop" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
+              }`}
+          >
+            МАГАЗИН
+          </Link>
+
+          {/* ДИЗАЙНЕРИ доступна только неавторизованным пользователям или клиентам  */}
+          {(!currentUser || currentUser?.userType === "client") && (
+            <Link
+              href="/designers"
+              className={`text-base px-4 py-2 font-bold ${activePage === "designers" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
+                }`}
+            >
+              ДИЗАЙНЕРИ
+            </Link>
+          )}
+
+
 
           {/* МЕСЕНДЖЕР доступен только авторизованным пользователям */}
           {isLogedIn && (
