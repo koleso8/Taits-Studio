@@ -175,15 +175,27 @@ export default function AddProductPage() {
         />
         <div className="absolute top-6 left-6">
           <div className="flex flex-col">
-            <Link href="/">
-              <Image
-                src="/logo.png"
-                alt="logo"
-                className="object-cover"
-                width={98}
-                height={52}
-              />
-            </Link>
+            {(!currentUser || currentUser?.userType === "client") && (
+              <Link href="/">
+                <Image
+                  src="/logo.png"
+                  alt="logo"
+                  className="object-cover"
+                  width={98}
+                  height={52}
+                />
+              </Link>)}
+            {currentUser?.userType === "designer" && (
+              <Link
+                href={`/designers/${currentUser.id}`}>
+                <Image
+                  src="/logo.png"
+                  alt="logo"
+                  className="object-cover"
+                  width={98}
+                  height={52}
+                />
+              </Link>)}
           </div>
         </div>
       </div>

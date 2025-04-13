@@ -128,9 +128,15 @@ export default function EditProfilePage() {
           priority
         />
         <div className="absolute top-6 left-6">
-          <Link href="/">
-            <Image src="/logo.png" alt="logo" width={98} height={52} />
-          </Link>
+          {(!currentUser || currentUser?.userType === "client") && (
+            <Link href="/">
+              <Image src="/logo.png" alt="logo" width={98} height={52} />
+            </Link>)}
+          {currentUser?.userType === "designer" && (
+            <Link
+              href={`/designers/${currentUser.id}`}>
+              <Image src="/logo.png" alt="logo" width={98} height={52} />
+            </Link>)}
         </div>
       </div>
 
