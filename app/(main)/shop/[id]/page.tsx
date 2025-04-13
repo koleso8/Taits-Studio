@@ -126,7 +126,7 @@ export default function ProductDetailPage() {
             ) : (
               <Link
                 href={"/payment"}
-                className="w-56 bg-[#fee685] text-gray-700 hover:bg-yellow-500 text-base font-bold rounded-md p-5 transition-all ease-linear duration-300 flex items-center gap-4 h-9 mt-8"
+                className="w-44 bg-[#fee685] text-gray-700 hover:bg-yellow-500 text-base font-bold rounded-md p-5 transition-all ease-linear duration-300 flex items-center gap-4 h-9 mt-8"
               >
                 <CircleDollarSign size={24} strokeWidth={2} />
                 КУПИТИ

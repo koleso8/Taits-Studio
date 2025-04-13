@@ -3,11 +3,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useParams } from "next/navigation";
-
-const isClient = false;
-const user = {
-  id: 1,
-};
+import { isClient, user } from "@/app/utils/test.js";
 
 export default function ProductDetailPage({ }) {
   const designers = [

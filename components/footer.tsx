@@ -1,8 +1,7 @@
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { SocialNav } from "./SocialNav"
 
-const isClient = false
+import { SocialNav } from "./SocialNav"
+import { isClient, user } from "@/app/utils/test.js";
 export default function Footer() {
   return (
     <footer className=" pb-[60px] h-[255px] pt-[60px] ">

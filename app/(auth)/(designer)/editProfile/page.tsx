@@ -150,7 +150,7 @@ export default function EditProfilePage() {
                 </p>
 
                 {preview && (
-                  <div className="mt-4">
+                  <div className="">
                     <img
                       src={preview}
                       alt="Preview"

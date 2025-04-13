@@ -7,10 +7,7 @@ import Image from "next/image";
 import { LogIn, Search } from "lucide-react";
 import { usePathname } from "next/navigation";
 
-const isClient = false;
-const user = {
-  id: 1,
-};
+import { isClient, user } from "@/app/utils/test.js";
 
 export default function Header() {
   const pathname = usePathname();
