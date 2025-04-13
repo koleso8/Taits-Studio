@@ -1,17 +1,36 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function ProductDetailPage() {
   const [currentUser, setCurrentUser] = useState<any>(null);
+  const router = useRouter();
 
-  // Загрузка текущего пользователя из localStorage
+  // Загрузка текущего пользователя и проверка чатов
   useEffect(() => {
+    // Загружаем текущего пользователя
     const user = JSON.parse(localStorage.getItem("currentUser") || "{}");
     if (user && user.id) {
       setCurrentUser(user);
+    } else {
+      // Если пользователь не авторизован, оставляем на странице
+      return;
     }
-  }, []);
+
+    // Проверяем наличие чатов
+    const savedChats = JSON.parse(localStorage.getItem("chats") || "{}");
+    const chatIds = Object.keys(savedChats).filter(
+      (chatId) => Array.isArray(savedChats[chatId]) && savedChats[chatId].length > 0
+    );
+
+    // Если есть чаты, перенаправляем в первый доступный чат
+    if (chatIds.length > 0) {
+      const firstChatId = chatIds[0]; // Например, "1-2"
+      const designerId = firstChatId.split("-")[1]; // Извлекаем ID дизайнера (например, "2")
+      router.push(`/messenger/${designerId}`);
+    }
+  }, [router]);
 
   return (
     <div className="flex items-center">
