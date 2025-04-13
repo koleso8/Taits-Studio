@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 export default function ProductDetailPage() {
   // Дефолтный дизайнер
   const defaultDesigner = {
-    id: 1,
+    id: "1",
     avatar: "/ava.png",
     name: "ТАІЦЬКА КАТЕРИНА",
     nicname: "tai.tss",

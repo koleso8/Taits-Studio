@@ -66,7 +66,7 @@ export default function ChatInterface({ designer }: ChatInterfaceProps) {
         userType: "designer",
         spec: "Графічний дизайнер",
         avatar: "/ava.png",
-        nicname: "katerina",
+        nicname: "tai.tss",
         regDate: "2023-01-01",
         works: 10,
         finishedProjects: 5,
