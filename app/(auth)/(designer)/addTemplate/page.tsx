@@ -10,7 +10,6 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { SocialNav } from "@/components/SocialNav";
 import { Loader2, Upload } from "lucide-react";
-import { addProduct } from "@/app/actions/product-actions";
 
 interface Product {
   id: number;
@@ -22,7 +21,7 @@ interface Product {
   format: string;
   dimensions: string;
   size: string;
-  image: string;
+  image: string; // Теперь это base64 строка
   downloads: number;
   isTemplate: boolean;
   createdAt: string;
@@ -34,6 +33,15 @@ export default function AddProductPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fileSize, setFileSize] = useState<string>("0 KB");
   const [currentUser, setCurrentUser] = useState<any>(null);
+  const [formData, setFormData] = useState({
+    category: "",
+    title: "",
+    format: "",
+    dimensions: "",
+    size: "0 KB",
+    price: "0",
+    image: "",
+  });
   const router = useRouter();
 
   // Загрузка текущего пользователя и проверка авторизации
@@ -54,6 +62,7 @@ export default function AddProductPage() {
         setMessage({ type: "error", text: "Файл занадто великий (макс. 32 МБ)" });
         setPreview(null);
         setFileSize("0 KB");
+        setFormData((prev) => ({ ...prev, image: "", size: "0 KB" }));
         return;
       }
 
@@ -71,13 +80,22 @@ export default function AddProductPage() {
 
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPreview(reader.result as string);
+        const base64String = reader.result as string;
+        setPreview(base64String);
+        setFormData((prev) => ({ ...prev, image: base64String, size: formattedSize }));
       };
       reader.readAsDataURL(file);
     } else {
       setPreview(null);
       setFileSize("0 KB");
+      setFormData((prev) => ({ ...prev, image: "", size: "0 KB" }));
     }
+  };
+
+  // Обработчик изменения полей формы
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   // Обработчик отправки формы
@@ -86,36 +104,57 @@ export default function AddProductPage() {
     setIsSubmitting(true);
     setMessage(null);
 
-    const formData = new FormData(e.currentTarget);
-    const price = Number(formData.get("price")) || 0;
-    formData.set("isFree", price === 0 ? "true" : "false");
-
     try {
-      const result = await addProduct(formData);
-
-      if (result.success && result.newProduct) {
-        const storedProducts = localStorage.getItem("user-products");
-        let userProducts: Product[] = [];
-
-        if (storedProducts) {
-          try {
-            userProducts = JSON.parse(storedProducts);
-          } catch (error) {
-            console.error("Failed to parse stored products:", error);
-          }
-        }
-
-        userProducts.push(result.newProduct);
-        localStorage.setItem("user-products", JSON.stringify(userProducts));
-
-        setMessage({ type: "success", text: "Шаблон успішно додано" });
-        setPreview(null);
-        setFileSize("0 KB");
-        (e.target as HTMLFormElement).reset();
-        router.refresh();
-      } else {
-        setMessage({ type: "error", text: "Помилка при додаванні шаблону" });
+      if (!currentUser) {
+        throw new Error("Користувач не авторизований");
       }
+
+      // Формируем новый продукт
+      const newProduct: Product = {
+        id: Date.now(), // Уникальный ID на основе времени
+        title: formData.title,
+        category: formData.category,
+        author: currentUser?.nicname || currentUser?.name || "Невідомий автор",
+        isFree: Number(formData.price) === 0,
+        price: Number(formData.price),
+        format: formData.format || "PNG", // Значение по умолчанию
+        dimensions: formData.dimensions || "1512 x 982 px", // Значение по умолчанию
+        size: formData.size,
+        image: formData.image, // base64 строка
+        downloads: 0,
+        isTemplate: true,
+        createdAt: new Date().toISOString(),
+      };
+
+      // Сохраняем в localStorage
+      const storedProducts = localStorage.getItem("user-products");
+      let userProducts: Product[] = [];
+
+      if (storedProducts) {
+        try {
+          userProducts = JSON.parse(storedProducts);
+        } catch (error) {
+          console.error("Failed to parse stored products:", error);
+        }
+      }
+
+      userProducts.push(newProduct);
+      localStorage.setItem("user-products", JSON.stringify(userProducts));
+
+      setMessage({ type: "success", text: "Шаблон успішно додано" });
+      setPreview(null);
+      setFileSize("0 KB");
+      setFormData({
+        category: "",
+        title: "",
+        format: "",
+        dimensions: "",
+        size: "0 KB",
+        price: "0",
+        image: "",
+      });
+      (e.target as HTMLFormElement).reset();
+      router.refresh();
     } catch (error) {
       setMessage({ type: "error", text: "Помилка при додаванні шаблону" });
     } finally {
@@ -172,13 +211,6 @@ export default function AddProductPage() {
             </h1>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-3 mb-auto">
-              {/* Скрытое поле для автора */}
-              <input
-                type="hidden"
-                name="author"
-                value={currentUser?.nicname || currentUser?.name || "Невідомий автор"}
-              />
-
               <div className="">
                 <Label className="hidden" htmlFor="category">Назва роботи</Label>
                 <Input
@@ -186,6 +218,8 @@ export default function AddProductPage() {
                   name="category"
                   required
                   placeholder="Напрямок"
+                  value={formData.category}
+                  onChange={handleInputChange}
                   className="border-2 border-GRAY rounded-lg h-12 placeholder:text-gray-400 placeholder:text-base"
                 />
               </div>
@@ -226,6 +260,8 @@ export default function AddProductPage() {
                   id="title"
                   name="title"
                   required
+                  value={formData.title}
+                  onChange={handleInputChange}
                   className="border-2 border-GRAY rounded-lg h-12 placeholder:text-gray-400 placeholder:text-base"
                 />
               </div>
@@ -236,6 +272,8 @@ export default function AddProductPage() {
                   placeholder="Формат: наприклад PNG"
                   id="format"
                   name="format"
+                  value={formData.format}
+                  onChange={handleInputChange}
                   className="border-2 border-GRAY rounded-lg h-12 placeholder:text-gray-400 placeholder:text-base"
                 />
               </div>
@@ -247,6 +285,8 @@ export default function AddProductPage() {
                   id="dimensions"
                   type="text"
                   name="dimensions"
+                  value={formData.dimensions}
+                  onChange={handleInputChange}
                   className="border-2 border-GRAY rounded-lg h-12 placeholder:text-gray-400 placeholder:text-base"
                 />
               </div>
@@ -272,6 +312,8 @@ export default function AddProductPage() {
                   name="price"
                   type="number"
                   min="0"
+                  value={formData.price}
+                  onChange={handleInputChange}
                   className="border-2 border-GRAY rounded-lg h-12 placeholder:text-gray-400 placeholder:text-base"
                 />
               </div>

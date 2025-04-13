@@ -65,7 +65,7 @@ export default function ChatInterface({ designer }: ChatInterfaceProps) {
         name: "ТАІЦЬКА КАТЕРИНА",
         userType: "designer",
         spec: "Графічний дизайнер",
-        avatar: "/placeholderUser.png",
+        avatar: "/ava.png",
         nicname: "katerina",
         regDate: "2023-01-01",
         works: 10,
