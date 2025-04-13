@@ -1,6 +1,6 @@
 'use client'
 
-import ChatInterface from "@/components/chat-interface";
+import ChatInterface, { ChatInterfaceProps } from "@/components/chat-interface";
 import Image from "next/image"
 import Link from "next/link"
 import { useParams } from "next/navigation";
@@ -21,13 +21,17 @@ export default function ProductDetailPage({ }) {
 
   const isChat = true
 
-  // const { id } = useParams(); // Получаем параметры из URL
-
+  const params = useParams();
+  console.log(params); // Проверь что там
+  const id = params.id;
+  const designer: ChatInterfaceProps['designer'] = designers.find((designer) => designer.id === id)!
+  console.log(designer);
 
   return (
     <>
       {!isChat ? <h2 className="text-center text-2xl text-GRAY  w-72">ВИ ПОКИ НЕ МАЄТЕ ЧАТІВ З ДИЗАЙНЕРАМИ</h2> :
-        <ChatInterface designer={designers[0]} />}
+        <ChatInterface designer={designer || null} />}
+
     </>
   )
 }

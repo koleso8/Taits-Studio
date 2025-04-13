@@ -188,7 +188,7 @@ export default function ShopPage() {
               ))}
             </div>
           ) : filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 transition-all ease-linear duration-200">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 transition-all ease-linear duration-200 mb-11">
               {filteredProducts.map((product) => (
                 <Link key={product.id} href={`/shop/${product.id}`} className="block">
                   <div className="relative group">
@@ -197,7 +197,7 @@ export default function ShopPage() {
                       alt={product.title}
                       width={300}
                       height={196}
-                      className="shadow-xl hover:shadow-2xl hover:scale-105 transition-all ease-linear duration-200 w-full h-auto object-cover rounded-md max-h-[206px]"
+                      className="shadow-xl hover:shadow-2xl hover:scale-105 transition-all ease-linear duration-200 w-full h-auto object-cover rounded-md max-h-[206px] max-w-[318px]"
                       unoptimized={product.image.startsWith("http")} // Для внешних изображений
                     />
                     <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-200 flex items-end justify-start p-4 opacity-0 group-hover:opacity-100">

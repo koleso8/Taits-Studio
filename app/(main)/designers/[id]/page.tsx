@@ -4,6 +4,11 @@ import Image from "next/image"
 import Link from "next/link"
 import { useParams } from "next/navigation";
 
+const isClient = false;
+const user = {
+  id: 1,
+};
+
 export default function ProductDetailPage({ }) {
   const designers = [
     {
@@ -23,7 +28,8 @@ export default function ProductDetailPage({ }) {
 
   return (
     <section className="flex flex-col items-center ">
-      <h1 className="text-center font-bold text-[40px] text-GRAY mb-11">ПРОФІЛЬ ДИЗАЙНЕРА</h1>
+
+      <h1 className="text-center font-bold text-[40px] text-GRAY mb-11">{!isClient && id === String(user.id) ? "МІЙ ПРОФІЛЬ" : "ПРОФІЛЬ ДИЗАЙНЕРА"}</h1>
       {designers.map((designer) => (
         <div key={designer.id} className="flex items-start gap-12">
           <div className="flex">
@@ -51,7 +57,10 @@ export default function ProductDetailPage({ }) {
                   </li>
                 </ul>
               </div>
-              <Link href={`/designers/${designer.id}`} className="text-GRAY font-bold  h-10 py-6  flex items-center justify-center  rounded-lg bg-YELLOW  hover:bg-yellow-300 transition-all ease-linear duration-300">ЗАПИСАТИСЬ НА КОНСУЛЬТАЦІЮ</Link>
+              {!isClient && id === String(user.id)
+                ? <Link href={'/editProfile'} className="text-GRAY font-bold  h-10 py-6  flex items-center justify-center  rounded-lg bg-YELLOW  hover:bg-yellow-300 transition-all ease-linear duration-300 w-64">РЕДАГУВАТИ ПРОФІЛЬ</Link>
+                :
+                <Link href={`/messenger/${designer.id}`} className="text-GRAY font-bold  h-10 py-6  flex items-center justify-center  rounded-lg bg-YELLOW  hover:bg-yellow-300 transition-all ease-linear duration-300">ЗАПИСАТИСЬ НА КОНСУЛЬТАЦІЮ</Link>}
             </div>
           </div>
         </div>

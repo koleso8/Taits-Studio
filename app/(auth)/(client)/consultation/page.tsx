@@ -59,7 +59,7 @@ export default function LoginPage() {
                 ></textarea>
                 <Button
                   type="submit"
-                  className="w-full h-12 bg-[#fee685] text-GRAY hover:bg-yellow-300 text-xl font-bold rounded-md p-3 transition-all ease-linear duration-300"
+                  className="w-full h-12 bg-[#fee685] text-GRAY hover:bg-yellow-500 text-xl font-bold rounded-md p-3 transition-all ease-linear duration-300"
                 >
                   ЗАПИСАТИСЬ НА КОНСУЛЬТАЦІЮ
                 </Button>

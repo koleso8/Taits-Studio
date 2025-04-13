@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { ArrowLeft, Download } from "lucide-react";
+import { ArrowLeft, CircleDollarSign, Download } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { getProducts, type Product } from "../../../actions/product-actions";
@@ -70,16 +70,16 @@ export default function ProductDetailPage() {
   }
 
   return (
-    <main className="">
-      <div className="flex flex-col md:flex-row gap-8">
+    <main className=" ">
+      <div className="flex flex-col md:flex-row gap-8 mb-auto">
         {/* Product Image */}
-        <div className="rounded-lg overflow-hidden shadow-md w-full max-w-[552px]">
+        <div className="rounded-lg overflow-hidden shadow-md w-full max-w-[552px] mb-auto">
           <Image
             src={product.image || "/placeholder.svg"}
             alt={product.title}
             width={1512}
             height={982}
-            className="w-full h-auto object-cover"
+            className="w-full  h-auto max-h-[360px] object-cover "
             unoptimized={product.image.startsWith("http")} // For external images
           />
         </div>
@@ -118,7 +118,7 @@ export default function ProductDetailPage() {
               <a
                 href={product.image}
                 download
-                className="w-56 bg-[#fee685] text-gray-700 hover:bg-yellow-300 text-base font-bold rounded-md p-5 transition-all ease-linear duration-300 flex items-center gap-4 h-9 mt-8"
+                className="w-56 bg-[#fee685] text-gray-700 hover:bg-yellow-500 text-base font-bold rounded-md p-5 transition-all ease-linear duration-300 flex items-center gap-4 h-9 mt-8"
               >
                 <Download size={24} strokeWidth={2} />
                 ЗАВАНТАЖИТИ
@@ -126,8 +126,9 @@ export default function ProductDetailPage() {
             ) : (
               <Link
                 href={"/payment"}
-                className="w-56 bg-[#fee685] text-gray-700 hover:bg-yellow-300 text-base font-bold rounded-md p-5 transition-all ease-linear duration-300 flex items-center gap-4 h-9 mt-8"
+                className="w-56 bg-[#fee685] text-gray-700 hover:bg-yellow-500 text-base font-bold rounded-md p-5 transition-all ease-linear duration-300 flex items-center gap-4 h-9 mt-8"
               >
+                <CircleDollarSign size={24} strokeWidth={2} />
                 КУПИТИ
               </Link>
             )}

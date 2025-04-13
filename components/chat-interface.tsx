@@ -16,7 +16,7 @@ interface Message {
   timestamp: Date
 }
 
-interface ChatInterfaceProps {
+export interface ChatInterfaceProps {
   designer: {
     id: string
     name: string

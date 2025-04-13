@@ -5,12 +5,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { addProduct } from "../../../actions/product-actions";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { SocialNav } from "@/components/SocialNav";
-import { Loader2 } from "lucide-react";
+import { Loader2, Upload } from "lucide-react";
+import { addProduct } from "@/app/actions/product-actions";
 
 // Определяем тип Product на клиенте
 interface Product {
@@ -33,16 +33,35 @@ export default function AddProductPage() {
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [fileSize, setFileSize] = useState<string>("0 KB"); // Состояние для размера файла
   const router = useRouter();
 
-  // Обработчик изменения файла для предпросмотра
+  // Обработчик изменения файла для предпросмотра и вычисления размера
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       if (file.size > 32 * 1024 * 1024) {
         setMessage({ type: "error", text: "Файл занадто великий (макс. 32 МБ)" });
+        setPreview(null);
+        setFileSize("0 KB");
         return;
       }
+
+      // Вычисляем размер файла
+      const sizeInKB = file.size / 1024; // Переводим байты в КБ
+      let formattedSize: string;
+
+      if (sizeInKB < 1024) {
+        // Если меньше 1 МБ, показываем в КБ
+        formattedSize = `${sizeInKB.toFixed(2)} KB`;
+      } else {
+        // Если больше 1 МБ, показываем в МБ
+        const sizeInMB = sizeInKB / 1024;
+        formattedSize = `${sizeInMB.toFixed(2)} MB`;
+      }
+
+      setFileSize(formattedSize); // Обновляем состояние размера файла
+
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result as string);
@@ -50,6 +69,7 @@ export default function AddProductPage() {
       reader.readAsDataURL(file);
     } else {
       setPreview(null);
+      setFileSize("0 KB");
     }
   };
 
@@ -81,15 +101,16 @@ export default function AddProductPage() {
         userProducts.push(result.newProduct);
         localStorage.setItem("user-products", JSON.stringify(userProducts));
 
-        setMessage({ type: "success", text: result.message });
+        setMessage({ type: "success", text: "Шаблон успішно додано" });
         setPreview(null);
+        setFileSize("0 KB"); // Сбрасываем размер после отправки
         (e.target as HTMLFormElement).reset();
         router.refresh();
       } else {
-        setMessage({ type: "error", text: result.message });
+        setMessage({ type: "error", text: "Помилка при додаванні шаблону" });
       }
     } catch (error) {
-      setMessage({ type: "error", text: "Помилка при додаванні продукту" });
+      setMessage({ type: "error", text: "Помилка при додаванні шаблону" });
     } finally {
       setIsSubmitting(false);
     }
@@ -138,97 +159,111 @@ export default function AddProductPage() {
             </div>
           </div>
 
-          <div className="min-h-screen flex flex-col justify-center">
+          <div className="min-h-screen flex flex-col justify-center pt-32">
             <h1 className="text-center font-bold text-gray-800 text-3xl md:text-4xl tracking-tight mb-6">
               ВВЕДІТЬ ДАНІ ПРО НОВИЙ ШАБЛОН
             </h1>
 
-            {message && (
-              <div
-                className={`p-3 mb-4 rounded-md ${message.type === "success" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-                  }`}
-              >
-                {message.text}
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3 mb-auto">
               {/* Скрытые поля для категории и автора */}
-              <input type="hidden" name="category" value="Графіка" />
               <input type="hidden" name="author" value="tait.tss" />
 
-              <div className="space-y-2">
-                <Label htmlFor="title">Назва роботи</Label>
-                <Input id="title" name="title" required className="border-gray-300 rounded-md" />
+              <div className="">
+                <Label className="hidden" htmlFor="category">Назва роботи</Label>
+                <Input
+                  id="category"
+                  name="category"
+                  required
+                  placeholder="Напрямок"
+                  className="border-2 border-GRAY rounded-lg h-12 placeholder:text-gray-400 placeholder:text-base"
+                />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="image">Завантажте файл</Label>
+              <div className="relative">
+                <Label className="hidden" htmlFor="image">Завантажте файл</Label>
                 <Input
+                  placeholder="Завантажте файл"
                   id="image"
                   name="image"
                   type="file"
                   accept="image/*"
                   required
                   onChange={handleImageChange}
-                  className="border-gray-300 rounded-md"
+                  className="border-2 border-GRAY rounded-lg h-12 placeholder:text-gray-400 placeholder:text-base"
                 />
-                {preview && (
-                  <div className="absolute left-[10%] top-1/2 transform -translate-y-1/2">
-                    <img
-                      src={preview}
-                      alt="Preview"
-                      className=" h-auto max-w-96 rounded-md border-4 shadow-2xl"
-                    />
-                  </div>
-                )}
+                <Upload className="pointer-events-none absolute right-0 top-0 text-white p-3 bg-GRAY h-12 w-12 flex items-center justify-center rounded-r-lg z-10" />
+                <p className=" pointer-events-none absolute left-1 top-1 h-10 w-96 bg-white flex items-center px-4 text-gray-400">Завантажте файл</p>
+              </div>
+              {preview && (
+                <div className="absolute left-[120px] top-1/2 transform -translate-y-1/2">
+                  <img
+                    src={preview}
+                    alt="Preview"
+                    className="h-auto max-w-[600px] min-w-[500px] min-h-[200px] max-h-[400px] rounded-md border-4 shadow-2xl object-cover"
+                  />
+                </div>
+              )}
+
+              <div className="">
+                <Label className="hidden" htmlFor="title">Назва роботи</Label>
+                <Input
+                  placeholder="Назва роботи"
+                  id="title"
+                  name="title"
+                  required
+                  className="border-2 border-GRAY rounded-lg h-12 placeholder:text-gray-400 placeholder:text-base"
+                />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="format">Формат</Label>
+              <div className="">
+                <Label className="hidden" htmlFor="format">Формат</Label>
                 <Input
+                  placeholder="Формат: наприклад PNG"
                   id="format"
                   name="format"
-                  defaultValue="PNG"
-                  className="border-gray-300 rounded-md"
+                  className="border-2 border-GRAY rounded-lg h-12 placeholder:text-gray-400 placeholder:text-base"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="dimensions">Параметри в пікселях</Label>
+              <div className="">
+                <Label className="hidden" htmlFor="dimensions">Параметри в пікселях</Label>
                 <Input
+                  placeholder="Параметри в пікселях: наприклад 1512 x 982 px"
                   id="dimensions"
+                  type="text"
                   name="dimensions"
-                  defaultValue="1512 x 982 px"
-                  className="border-gray-300 rounded-md"
+                  className="border-2 border-GRAY rounded-lg h-12 placeholder:text-gray-400 placeholder:text-base"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="size">Розмір</Label>
+              <div className="">
+                <Label className="hidden" htmlFor="size">Розмір</Label>
                 <Input
+                  placeholder="Розмір: наприклад 1 Mb"
                   id="size"
                   name="size"
-                  defaultValue="1 MB"
-                  className="border-gray-300 rounded-md"
+                  type="text"
+                  value={fileSize} // Устанавливаем значение из состояния
+                  readOnly // Делаем поле только для чтения
+                  className="border-2 border-GRAY rounded-lg h-12 placeholder:text-gray-400 placeholder:text-base bg-gray-100"
                 />
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="price">Ціна в грн</Label>
+              <div className="">
+                <Label className="hidden" htmlFor="price">Ціна в грн</Label>
                 <Input
+                  placeholder="Ціна в грн: наприклад 0 або 100"
                   id="price"
                   name="price"
                   type="number"
                   min="0"
-                  defaultValue="0"
-                  className="border-gray-300 rounded-md"
+                  className="border-2 border-GRAY rounded-lg h-12 placeholder:text-gray-400 placeholder:text-base"
                 />
               </div>
 
               <Button
                 type="submit"
-                className="w-full h-12 bg-yellow-400 text-gray-800 hover:bg-yellow-500 text-xl font-bold rounded-md transition-all ease-linear duration-300"
+                className="w-full h-12 bg-YELLOW text-gray-800 hover:bg-yellow-500 text-xl font-bold rounded-md transition-all ease-linear duration-300"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
@@ -240,9 +275,18 @@ export default function AddProductPage() {
                   "ЗАВАНТАЖИТИ НОВИЙ ШАБЛОН"
                 )}
               </Button>
+
+              {message && (
+                <div
+                  className={`p-3 mb-4 rounded-md text-center ${message.type === "success" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                    }`}
+                >
+                  {message.text}
+                </div>
+              )}
             </form>
 
-            <div className="mt-8">
+            <div className="pb-11">
               <SocialNav />
             </div>
           </div>
