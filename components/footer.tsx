@@ -15,8 +15,10 @@ export default function Footer() {
     }
   }, []);
 
-  // Проверка, является ли пользователь клиентом
-  const isClientUser = currentUser?.userType === "client";
+  // Проверка, является ли пользователь дизайнером
+  const isDesignerUser = currentUser?.userType === "designer";
+  // Проверка, авторизован ли пользователь и является ли клиентом
+  const showConsultationButton = !currentUser?.id || currentUser?.userType === "client";
 
   return (
     <footer className="pb-[60px] h-[255px] pt-[60px]">
@@ -34,21 +36,21 @@ export default function Footer() {
             <h3 className="text-lg font-bold mb-3">КОНТАКТИ</h3>
             <p className="text-sm text-gray-600 mb-1">КАТЕРИНА ТАІЦЬКА</p>
             <p className="text-sm text-gray-600 mb-6">KATERYNATSITSKA@GMAIL.COM</p>
-            {isClientUser ? (
+            {showConsultationButton ? (
               <Link
                 href="/consultation"
                 className="w-[335px] h-12 border-2 border-[GRAY] rounded-lg text-GRAY text-base font-bold transition-all ease-linear duration-300 bg-white hover:bg-GRAY hover:text-white px-6 py-4"
               >
                 ЗАПИСАТИСЬ НА КОНСУЛЬТАЦІЮ
               </Link>
-            ) : (
+            ) : isDesignerUser ? (
               <Link
                 href="/addTemplate"
                 className="w-[335px] h-12 border-2 border-[GRAY] rounded-lg text-GRAY text-base font-bold transition-all ease-linear duration-300 bg-white hover:bg-GRAY hover:text-white px-6 py-4"
               >
                 ЗАВАНТАЖТИ НОВИЙ ШАБЛОН
               </Link>
-            )}
+            ) : null}
           </div>
         </div>
       </div>
