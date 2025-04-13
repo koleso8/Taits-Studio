@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -12,7 +12,6 @@ import { SocialNav } from "@/components/SocialNav";
 import { Loader2, Upload } from "lucide-react";
 import { addProduct } from "@/app/actions/product-actions";
 
-// Определяем тип Product на клиенте
 interface Product {
   id: number;
   title: string;
@@ -33,8 +32,19 @@ export default function AddProductPage() {
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [fileSize, setFileSize] = useState<string>("0 KB"); // Состояние для размера файла
+  const [fileSize, setFileSize] = useState<string>("0 KB");
+  const [currentUser, setCurrentUser] = useState<any>(null);
   const router = useRouter();
+
+  // Загрузка текущего пользователя и проверка авторизации
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("currentUser") || "{}");
+    if (user && user.id) {
+      setCurrentUser(user);
+    } else {
+      router.push("/login");
+    }
+  }, [router]);
 
   // Обработчик изменения файла для предпросмотра и вычисления размера
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -47,20 +57,17 @@ export default function AddProductPage() {
         return;
       }
 
-      // Вычисляем размер файла
-      const sizeInKB = file.size / 1024; // Переводим байты в КБ
+      const sizeInKB = file.size / 1024;
       let formattedSize: string;
 
       if (sizeInKB < 1024) {
-        // Если меньше 1 МБ, показываем в КБ
         formattedSize = `${sizeInKB.toFixed(2)} KB`;
       } else {
-        // Если больше 1 МБ, показываем в МБ
         const sizeInMB = sizeInKB / 1024;
         formattedSize = `${sizeInMB.toFixed(2)} MB`;
       }
 
-      setFileSize(formattedSize); // Обновляем состояние размера файла
+      setFileSize(formattedSize);
 
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -81,7 +88,7 @@ export default function AddProductPage() {
 
     const formData = new FormData(e.currentTarget);
     const price = Number(formData.get("price")) || 0;
-    formData.set("isFree", price === 0 ? "true" : "false"); // Устанавливаем isFree в зависимости от цены
+    formData.set("isFree", price === 0 ? "true" : "false");
 
     try {
       const result = await addProduct(formData);
@@ -103,7 +110,7 @@ export default function AddProductPage() {
 
         setMessage({ type: "success", text: "Шаблон успішно додано" });
         setPreview(null);
-        setFileSize("0 KB"); // Сбрасываем размер после отправки
+        setFileSize("0 KB");
         (e.target as HTMLFormElement).reset();
         router.refresh();
       } else {
@@ -159,14 +166,18 @@ export default function AddProductPage() {
             </div>
           </div>
 
-          <div className="min-h-screen flex flex-col justify-center pt-32">
+          <div className="min-h-screen flex flex-col justify-between pt-10">
             <h1 className="text-center font-bold text-gray-800 text-3xl md:text-4xl tracking-tight mb-6">
               ВВЕДІТЬ ДАНІ ПРО НОВИЙ ШАБЛОН
             </h1>
 
             <form onSubmit={handleSubmit} className="flex flex-col gap-3 mb-auto">
-              {/* Скрытые поля для категории и автора */}
-              <input type="hidden" name="author" value="tait.tss" />
+              {/* Скрытое поле для автора */}
+              <input
+                type="hidden"
+                name="author"
+                value={currentUser?.nicname || currentUser?.name || "Невідомий автор"}
+              />
 
               <div className="">
                 <Label className="hidden" htmlFor="category">Назва роботи</Label>
@@ -191,8 +202,12 @@ export default function AddProductPage() {
                   onChange={handleImageChange}
                   className="border-2 border-GRAY rounded-lg h-12 placeholder:text-gray-400 placeholder:text-base"
                 />
-                <Upload className="pointer-events-none absolute right-0 top-0 text-white p-3 bg-GRAY h-12 w-12 flex items-center justify-center rounded-r-lg z-10" />
-                <p className=" pointer-events-none absolute left-1 top-1 h-10 w-96 bg-white flex items-center px-4 text-gray-400">Завантажте файл</p>
+                <Upload
+                  className="pointer-events-none absolute right-0 top-0 text-white p-3 bg-GRAY h-12 w-12 flex items-center justify-center rounded-r-lg z-10"
+                />
+                <p className="pointer-events-none absolute left-1 top-1 h-10 w-96 bg-white flex items-center px-4 text-gray-400">
+                  Завантажте файл
+                </p>
               </div>
               {preview && (
                 <div className="absolute left-[120px] top-1/2 transform -translate-y-1/2">
@@ -243,8 +258,8 @@ export default function AddProductPage() {
                   id="size"
                   name="size"
                   type="text"
-                  value={fileSize} // Устанавливаем значение из состояния
-                  readOnly // Делаем поле только для чтения
+                  value={fileSize}
+                  readOnly
                   className="border-2 border-GRAY rounded-lg h-12 placeholder:text-gray-400 placeholder:text-base bg-gray-100"
                 />
               </div>
@@ -278,7 +293,9 @@ export default function AddProductPage() {
 
               {message && (
                 <div
-                  className={`p-3 mb-4 rounded-md text-center ${message.type === "success" ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+                  className={`p-3 mb-4 rounded-md text-center ${message.type === "success"
+                    ? "bg-green-100 text-green-800"
+                    : "bg-red-100 text-red-800"
                     }`}
                 >
                   {message.text}
@@ -286,7 +303,7 @@ export default function AddProductPage() {
               )}
             </form>
 
-            <div className="pb-11">
+            <div className="pb-5">
               <SocialNav />
             </div>
           </div>

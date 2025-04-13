@@ -9,27 +9,46 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { SocialNav } from "@/components/SocialNav";
 import { Loader2, Plus, Upload } from "lucide-react";
-import { addProduct } from "@/app/actions/product-actions";
 
 export default function EditProfilePage() {
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    spec: "",
+    avatar: "",
+  });
   const router = useRouter();
 
   const [cardData, setCardData] = useState({
-    cardNumber: '',
-    expiry: '',
-    cvv: '',
-    cardHolder: ''
-  })
+    cardNumber: "",
+    expiry: "",
+    cvv: "",
+    cardHolder: "",
+  });
 
+  // Загрузка данных текущего пользователя и банковской карты
   useEffect(() => {
-    const savedData = localStorage.getItem('cardData')
-    if (savedData) {
-      setCardData(JSON.parse(savedData))
+    const user = JSON.parse(localStorage.getItem("currentUser") || "{}");
+    if (user && user.id) {
+      setCurrentUser(user);
+      setFormData({
+        name: user.name || "",
+        spec: user.spec || "",
+        avatar: user.avatar || "",
+      });
+      setPreview(user.avatar || null);
+    } else {
+      router.push("/login"); // Редирект, если пользователь не авторизован
     }
-  }, [])
+
+    const savedCardData = localStorage.getItem("cardData");
+    if (savedCardData) {
+      setCardData(JSON.parse(savedCardData));
+    }
+  }, [router]);
 
   // Обработчик изменения файла для предпросмотра
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,11 +63,19 @@ export default function EditProfilePage() {
       const reader = new FileReader();
       reader.onloadend = () => {
         setPreview(reader.result as string);
+        setFormData((prev) => ({ ...prev, avatar: reader.result as string }));
       };
       reader.readAsDataURL(file);
     } else {
       setPreview(null);
+      setFormData((prev) => ({ ...prev, avatar: "" }));
     }
+  };
+
+  // Обработчик изменения полей формы
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   // Обработчик отправки формы
@@ -57,23 +84,31 @@ export default function EditProfilePage() {
     setIsSubmitting(true);
     setMessage(null);
 
-    const formData = new FormData(e.currentTarget);
-    // Удаляем поле image, если файл не загружен
-    if (!formData.get("image")) {
-      formData.delete("image");
-    }
-
     try {
-      const result = await addProduct(formData);
-
-      if (result.success) {
-        setMessage({ type: "success", text: "Дані успішно збережено" });
-        setPreview(null);
-        (e.target as HTMLFormElement).reset();
-        router.refresh();
-      } else {
-        setMessage({ type: "error", text: "Помилка при збереженні даних" });
+      if (!currentUser) {
+        throw new Error("Користувач не авторизований");
       }
+
+      // Обновляем currentUser
+      const updatedUser = {
+        ...currentUser,
+        name: formData.name || currentUser.name,
+        spec: formData.spec || currentUser.spec,
+        avatar: formData.avatar || currentUser.avatar,
+      };
+      localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+
+      // Обновляем массив users
+      const users = JSON.parse(localStorage.getItem("users") || "[]");
+      const updatedUsers = users.map((u: any) =>
+        String(u.id) === String(currentUser.id) ? updatedUser : u
+      );
+      localStorage.setItem("users", JSON.stringify(updatedUsers));
+
+      setCurrentUser(updatedUser);
+      setMessage({ type: "success", text: "Дані успішно збережено" });
+      (e.target as HTMLFormElement).reset();
+      router.refresh();
     } catch (error) {
       setMessage({ type: "error", text: "Помилка при збереженні даних" });
     } finally {
@@ -109,10 +144,9 @@ export default function EditProfilePage() {
           </div>
 
           <div className="min-h-screen flex flex-col justify-between pt-32">
-
             <form onSubmit={handleSubmit} className="flex flex-col gap-3 pt-[100px]">
               <h1 className="text-center font-bold text-gray-800 text-3xl md:text-4xl tracking-tight mb-6">
-                ВВЕДІТЬ НОВІ ДАНІ ПРО ПРО СЕБЕ
+                ВВЕДІТЬ НОВІ ДАНІ ПРО СЕБЕ
               </h1>
               <div>
                 <Label className="hidden" htmlFor="name">Прізвище Ім’я</Label>
@@ -120,6 +154,8 @@ export default function EditProfilePage() {
                   id="name"
                   name="name"
                   placeholder="Прізвище Ім'я"
+                  value={formData.name}
+                  onChange={handleInputChange}
                   className="border-2 border-GRAY rounded-lg h-12 placeholder:text-gray-400 placeholder:text-base"
                 />
               </div>
@@ -130,6 +166,8 @@ export default function EditProfilePage() {
                   id="spec"
                   name="spec"
                   placeholder="Посада"
+                  value={formData.spec}
+                  onChange={handleInputChange}
                   className="border-2 border-GRAY rounded-lg h-12 placeholder:text-gray-400 placeholder:text-base"
                 />
               </div>
@@ -154,13 +192,11 @@ export default function EditProfilePage() {
                     <img
                       src={preview}
                       alt="Preview"
-                      className=" absolute -top-[440px] right-1/2 transform translate-x-1/2 w-[1800px] h-[1800px] max-w-[180px] max-h-[180px] rounded-full border-4 shadow-xl object-cover"
+                      className="absolute -top-[440px] right-1/2 transform translate-x-1/2 w-[1800px] h-[1800px] max-w-[180px] max-h-[180px] rounded-full border-4 shadow-xl object-cover"
                     />
                   </div>
                 )}
               </div>
-
-
 
               <div className="relative">
                 <Label className="hidden" htmlFor="card">Банківська карта</Label>

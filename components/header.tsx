@@ -5,12 +5,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { LogIn, Search } from "lucide-react";
-import { usePathname } from "next/navigation";
-
-import { isClient, user } from "@/app/utils/test.js";
+import { usePathname, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
+  const [currentUser, setCurrentUser] = useState<any>(null);
+
+  // Загрузка текущего пользователя из localStorage
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("currentUser") || "{}");
+    if (user && user.id) {
+      setCurrentUser(user);
+    }
+  }, []);
 
   // Функция для определения активной страницы
   const getActivePage = (pathname: string): string => {
@@ -21,8 +30,13 @@ export default function Header() {
     if (pathname.startsWith("/shop")) return "shop";
     if (pathname.startsWith("/designers")) {
       const segments = pathname.split("/").filter(Boolean);
-      if (segments.length === 2 && segments[0] === "designers" && !isNaN(Number(segments[1]))) {
-        if (isClient && pathname.startsWith("/designers")) return "designers";
+      if (
+        segments.length === 2 &&
+        segments[0] === "designers" &&
+        !isNaN(Number(segments[1]))
+      ) {
+        if (currentUser?.userType === "client" && pathname.startsWith("/designers"))
+          return "designers";
         return "designersID";
       }
       return "designers";
@@ -32,7 +46,14 @@ export default function Header() {
   };
 
   const activePage = getActivePage(pathname);
-  const isLogedIn = true;
+  const isLogedIn = !!currentUser;
+
+  // Обработчик выхода
+  const handleLogout = () => {
+    localStorage.removeItem("currentUser");
+    setCurrentUser(null);
+    router.push("/login");
+  };
 
   return (
     <header className="flex items-center justify-between px-4 py-3 bg-white h-[100px]">
@@ -48,30 +69,34 @@ export default function Header() {
             />
           </div>
         </Link>
-        <nav className="hidden md:flex gap-2 items-center ">
-          {!isClient && (
+        <nav className="hidden md:flex gap-2 items-center">
+          {currentUser?.userType === "designer" && (
             <Link
-              href={`/designers/${user.id}`}
+              href={`/designers/${currentUser.id}`}
               className={`text-base px-4 py-2 font-bold ${activePage === "designersID" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
                 }`}
             >
               ПРОФІЛЬ
             </Link>
           )}
-          {isClient && <Link
-            href="/"
-            className={`text-base px-4 py-2 font-bold ${activePage === "home" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
-              }`}
-          >
-            ГОЛОВНА
-          </Link>}
-          {isClient && <Link
-            href="/services"
-            className={`text-base px-4 py-2 font-bold ${activePage === "services" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
-              }`}
-          >
-            ПОСЛУГИ
-          </Link>}
+          {currentUser?.userType === "client" && (
+            <Link
+              href="/"
+              className={`text-base px-4 py-2 font-bold ${activePage === "home" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
+                }`}
+            >
+              ГОЛОВНА
+            </Link>
+          )}
+          {currentUser?.userType === "client" && (
+            <Link
+              href="/services"
+              className={`text-base px-4 py-2 font-bold ${activePage === "services" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
+                }`}
+            >
+              ПОСЛУГИ
+            </Link>
+          )}
           <Link
             href="/shop"
             className={`text-base px-4 py-2 font-bold ${activePage === "shop" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
@@ -79,13 +104,15 @@ export default function Header() {
           >
             МАГАЗИН
           </Link>
-          {isClient && <Link
-            href="/designers"
-            className={`text-base px-4 py-2 font-bold ${activePage === "designers" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
-              }`}
-          >
-            ДИЗАЙНЕРИ
-          </Link>}
+          {currentUser?.userType === "client" && (
+            <Link
+              href="/designers"
+              className={`text-base px-4 py-2 font-bold ${activePage === "designers" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
+                }`}
+            >
+              ДИЗАЙНЕРИ
+            </Link>
+          )}
           <Link
             href="/messenger"
             className={`text-base px-4 py-2 font-bold ${activePage === "messenger" ? "bg-ROZA text-white rounded-xl" : "text-GRAY"
@@ -106,12 +133,22 @@ export default function Header() {
             <Search color="#353535" />
           </div>
         </div>
-        <Link href="/login">
-          <Button className="ml-9 bg-YELLOW hover:bg-yellow-400 text-black text-base font-semibold h-10 px-4 rounded-md">
-            <LogIn color="#353535" strokeWidth={3} className={isLogedIn && 'rotate-180'} />
-            {!isLogedIn ? "УВІЙТИ" : "ВИЙТИ"}
+        {isLogedIn ? (
+          <Button
+            onClick={handleLogout}
+            className="ml-9 bg-YELLOW hover:bg-yellow-400 text-black text-base font-semibold h-10 px-4 rounded-md"
+          >
+            <LogIn color="#353535" strokeWidth={3} className="rotate-180" />
+            ВИЙТИ
           </Button>
-        </Link>
+        ) : (
+          <Link href="/login">
+            <Button className="ml-9 bg-YELLOW hover:bg-yellow-400 text-black text-base font-semibold h-10 px-4 rounded-md">
+              <LogIn color="#353535" strokeWidth={3} />
+              УВІЙТИ
+            </Button>
+          </Link>
+        )}
       </div>
     </header>
   );

@@ -75,7 +75,7 @@ export default function HomePage() {
           <p className="text-xl text-white mb-8 max-w-[642px] text-left ">
             Ми створимо унікальний логотип, що відображатиме індивідуальність вашого бренду.
           </p>
-          <Button className="font-bold bg-transparent text-white hover:bg-white hover:text-pink-500 text-sm px-6 py-[10px] border-2 border-white p-3 transition-all ease-linear duration-300 rounded-xl">ЗАМОВИТИ</Button>
+          <Link href="/shop"><Button className="font-bold bg-transparent text-white hover:bg-white hover:text-pink-500 text-sm px-6 py-[10px] border-2 border-white p-3 transition-all ease-linear duration-300 rounded-xl">ЗАМОВИТИ</Button></Link>
         </Card>
       </main>
 
