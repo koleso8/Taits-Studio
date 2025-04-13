@@ -48,7 +48,7 @@ export default function LoginPage() {
             </div>
           </div>
 
-          <div className="h-screen pt-64 pb-20 flex flex-col justify-between">
+          <div className="h-screen pt-28 pb-20 flex flex-col justify-between">
 
             <div className="">
               <h1 className="text-center  font-bold text-GRAY text-4xl tracking-tight mb-10">БЕЗПЕЧНА ОПЛАТА ЧЕРЕЗ НАШ САЙТ</h1>
