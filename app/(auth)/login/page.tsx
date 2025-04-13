@@ -6,37 +6,42 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Loader2 } from "lucide-react";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
+    setMessage(null);
+    setIsSubmitting(true);
 
     // Получение пользователей из localStorage
     const users = JSON.parse(localStorage.getItem("users") || "[]");
-    const user = users.find(
-      (u: any) => u.email === email && u.password === password
-    );
+    const user = users.find((u: any) => u.email === email && u.password === password);
 
     if (!user) {
-      setError("Неправильна пошта або пароль");
+      setMessage({ type: "error", text: "Неправильна пошта або пароль" });
+      setIsSubmitting(false);
       return;
     }
 
     // Сохранение текущего пользователя
     localStorage.setItem("currentUser", JSON.stringify(user));
+    setMessage({ type: "success", text: "Вхід виконано успішно" });
 
     // Перенаправление в зависимости от типа пользователя
-    if (user.userType === "client") {
-      router.push("/shop");
-    } else {
-      router.push(`/designers/${user.id}`);
-    }
+    setTimeout(() => {
+      if (user.userType === "client") {
+        router.push("/shop");
+      } else {
+        router.push(`/designers/${user.id}`);
+      }
+    }, 1000);
   };
 
   return (
@@ -53,13 +58,7 @@ export default function LoginPage() {
         <div className="absolute top-6 left-6">
           <div className="flex flex-col">
             <Link href="/">
-              <Image
-                src="/logo.png"
-                alt="logo"
-                className="object-cover"
-                width={98}
-                height={52}
-              />
+              <Image src="/logo.png" alt="logo" className="object-cover" width={98} height={52} />
             </Link>
           </div>
         </div>
@@ -71,13 +70,7 @@ export default function LoginPage() {
           <div className="md:hidden text-black font-bold">
             <div className="flex flex-col">
               <Link href="/">
-                <Image
-                  src="/logo.png"
-                  alt="logo"
-                  className="object-cover"
-                  width={98}
-                  height={52}
-                />
+                <Image src="/logo.png" alt="logo" className="object-cover" width={98} height={52} />
               </Link>
             </div>
           </div>
@@ -103,12 +96,27 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                {error && <p className="text-red-500 text-sm">{error}</p>}
+                {message && (
+                  <p
+                    className={`text-sm text-center ${message.type === "success" ? "text-green-500" : "text-red-500"
+                      }`}
+                  >
+                    {message.text}
+                  </p>
+                )}
                 <Button
                   type="submit"
                   className="w-full h-12 bg-[#fee685] text-GRAY hover:bg-yellow-300 text-xl font-bold rounded-md p-3 transition-all ease-linear duration-300"
+                  disabled={isSubmitting}
                 >
-                  УВІЙТИ
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Вхід...
+                    </>
+                  ) : (
+                    "УВІЙТИ"
+                  )}
                 </Button>
               </form>
             </div>

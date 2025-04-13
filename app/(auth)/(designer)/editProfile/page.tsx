@@ -20,14 +20,13 @@ export default function EditProfilePage() {
     spec: "",
     avatar: "",
   });
-  const router = useRouter();
-
   const [cardData, setCardData] = useState({
     cardNumber: "",
     expiry: "",
     cvv: "",
     cardHolder: "",
   });
+  const router = useRouter();
 
   // Загрузка данных текущего пользователя и банковской карты
   useEffect(() => {
@@ -116,6 +115,29 @@ export default function EditProfilePage() {
     }
   };
 
+  // Обработчик удаления профиля
+  const handleDeleteProfile = () => {
+    if (!currentUser) return;
+
+    if (confirm("Ви впевнені, що хочете видалити свій профіль? Цю дію не можна скасувати.")) {
+      // Удаляем пользователя из массива users
+      const users = JSON.parse(localStorage.getItem("users") || "[]");
+      const updatedUsers = users.filter((u: any) => String(u.id) !== String(currentUser.id));
+      localStorage.setItem("users", JSON.stringify(updatedUsers));
+
+      // Удаляем currentUser
+      localStorage.removeItem("currentUser");
+
+      // Удаляем связанные данные (опционально)
+      localStorage.removeItem("cardData");
+
+      setMessage({ type: "success", text: "Профіль успішно видалено" });
+      setTimeout(() => {
+        router.push("/login");
+      }, 1000);
+    }
+  };
+
   return (
     <div className="flex min-h-screen w-full">
       {/* Left side - Flower image */}
@@ -131,12 +153,13 @@ export default function EditProfilePage() {
           {(!currentUser || currentUser?.userType === "client") && (
             <Link href="/">
               <Image src="/logo.png" alt="logo" width={98} height={52} />
-            </Link>)}
+            </Link>
+          )}
           {currentUser?.userType === "designer" && (
-            <Link
-              href={`/designers/${currentUser.id}`}>
+            <Link href={`/designers/${currentUser.id}`}>
               <Image src="/logo.png" alt="logo" width={98} height={52} />
-            </Link>)}
+            </Link>
+          )}
         </div>
       </div>
 
@@ -232,6 +255,16 @@ export default function EditProfilePage() {
                 ) : (
                   "ЗБЕРЕГТИ ЗМІНИ"
                 )}
+              </Button>
+
+              {/* Кнопка удаления профиля */}
+              <Button
+                type="button"
+                onClick={handleDeleteProfile}
+                className="w-full h-12 bg-red-500 text-white hover:bg-red-600 text-xl font-bold rounded-md transition-all duration-300 mt-4"
+                disabled={isSubmitting}
+              >
+                ВИДАЛИТИ ПРОФІЛЬ
               </Button>
 
               {message && (

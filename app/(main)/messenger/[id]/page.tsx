@@ -6,6 +6,8 @@ import ChatInterface from "@/components/chat-interface";
 
 // Интерфейс для типизации пользователей
 interface User {
+  email: string,
+  password: string,
   id: string; // Изменено на string
   name: string;
   avatar: string;
@@ -25,6 +27,8 @@ export default function MessengerPage() {
 
   // Дефолтный дизайнер
   const defaultDesigner: User = {
+    email: "1@example.com",
+    password: "123",
     id: "1", // Изменено на строку
     avatar: "/ava.png",
     name: "ТАІЦЬКА КАТЕРИНА",
@@ -72,6 +76,8 @@ export default function MessengerPage() {
       if (foundClient) {
         // Адаптируем данные клиента под структуру ChatInterface
         setInterlocutor({
+          email: "1@example.com",
+          password: "123",
           id: String(foundClient.id),
           name: foundClient.name,
           avatar: foundClient.avatar || "/placeholderUser.png",
@@ -84,6 +90,8 @@ export default function MessengerPage() {
         });
       } else {
         setInterlocutor({
+          email: "1@example.com",
+          password: "123",
           id: String(id),
           name: "КЛІЄНТ НЕ ЗНАЙДЕНИЙ",
           avatar: "/placeholderUser.png",

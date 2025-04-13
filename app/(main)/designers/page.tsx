@@ -7,6 +7,8 @@ import { useState, useEffect } from "react";
 export default function ShopPage() {
   // Дефолтный дизайнер
   const defaultDesigner = {
+    email: "1@example.com",
+    password: "123",
     id: "1",
     avatar: "/ava.png",
     name: "ТАІЦЬКА КАТЕРИНА",

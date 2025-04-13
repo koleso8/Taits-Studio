@@ -4,8 +4,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
 import { getProducts, type Product } from "../../actions/product-actions";
 import { Card } from "@/components/Card";
 
@@ -101,7 +99,7 @@ export default function ShopPage() {
   return (
     <div className="">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Магазин</h1>
+        <h1 className="text-2xl">Магазин</h1>
 
       </div>
 
@@ -126,7 +124,7 @@ export default function ShopPage() {
 
               <div className="border-[1px] border-white w-full h-[1px] opacity-50 mb-6" />
 
-              <div className="flex items-center">
+              {/* <div className="flex items-center">
                 <Checkbox
                   id="templates"
                   className="border-white data-[state=checked]:bg-white data-[state=checked]:text-pink-500"
@@ -136,7 +134,7 @@ export default function ShopPage() {
                 <label htmlFor="templates" className="ml-2 text-sm font-medium">
                   ШАБЛОНИ
                 </label>
-              </div>
+              </div> */}
 
               <div className="flex items-center">
                 <Checkbox

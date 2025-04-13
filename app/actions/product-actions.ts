@@ -52,21 +52,6 @@ export async function getProducts(): Promise<Product[]> {
       isTemplate: false,
       createdAt: new Date().toISOString(),
     },
-    {
-      id: 3,
-      title: "Шаблон для банеру або логотипу",
-      category: "Графіка",
-      author: "tait.tss",
-      isFree: true,
-      price: 0,
-      format: "PNG",
-      dimensions: "1512 x 982 px",
-      size: "1.48 MB",
-      image: "/template.png",
-      downloads: 0,
-      isTemplate: true,
-      createdAt: new Date().toISOString(),
-    },
   ];
 
   // В реальном проекте userProducts можно получать из базы данных или другого хранилища

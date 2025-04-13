@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { SocialNav } from "@/components/SocialNav";
-import { Loader2, Upload } from "lucide-react";
+import { Loader2, Upload, User } from "lucide-react";
 
 interface Product {
   id: number;
@@ -316,7 +316,7 @@ export default function AddProductPage() {
                 />
               </div>
 
-              <div className="">
+              <div className="relative">
                 <Label className="hidden" htmlFor="price">Ціна в грн</Label>
                 <Input
                   placeholder="Ціна в грн: наприклад 0 або 100"
@@ -324,10 +324,13 @@ export default function AddProductPage() {
                   name="price"
                   type="number"
                   min="0"
-                  value={formData.price}
+                  // value={formData.price}
                   onChange={handleInputChange}
-                  className="border-2 border-GRAY rounded-lg h-12 placeholder:text-gray-400 placeholder:text-base"
+                  className="border-2 border-GRAY rounded-lg h-12 placeholder:text-gray-400 placeholder:text-base "
                 />
+                {Number(formData.price) >= 0 && <p className="pointer-events-none absolute left-16 top-1 h-10  flex items-center px-4 text-gray-400">
+                  ГРН
+                </p>}
               </div>
 
               <Button
@@ -347,12 +350,18 @@ export default function AddProductPage() {
 
               {message && (
                 <div
-                  className={`p-3 mb-4 rounded-md text-center ${message.type === "success"
+                  className={`p-3 mb-4 rounded-md text-center flex flex-col items-center ${message.type === "success"
                     ? "bg-green-100 text-green-800"
                     : "bg-red-100 text-red-800"
                     }`}
                 >
                   {message.text}
+                  <Link
+                    href={`/designers/${currentUser.id}`}
+                    className="flex items-center gap-2 mt-2 border-t w-full justify-center pt-2 border-green-900"
+                  >Перейти до профілю
+                    <User />
+                  </Link>
                 </div>
               )}
             </form>

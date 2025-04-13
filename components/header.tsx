@@ -19,6 +19,29 @@ export default function Header() {
     if (user && user.id) {
       setCurrentUser(user);
     }
+    const defaultDesigner = {
+      email: "1@example.com",
+      password: "123",
+      id: "1",
+      userType: "designer",
+      avatar: "/ava.png",
+      name: "ТАІЦЬКА КАТЕРИНА",
+      nicname: "tai.tss",
+      spec: "Графічний дизайнер",
+      regDate: "29/03/2025",
+      works: 2,
+      finishedProjects: 1,
+    };
+
+    // Загружаем пользователей из localStorage
+    let users = JSON.parse(localStorage.getItem("users") || "[]");
+
+    // Проверяем, есть ли дефолтный дизайнер в users, если нет — добавляем
+    const defaultDesignerExists = users.some((u: any) => u.id === defaultDesigner.id);
+    if (!defaultDesignerExists) {
+      users.push(defaultDesigner);
+      localStorage.setItem("users", JSON.stringify(users));
+    }
   }, []);
 
   // Функция для определения активной страницы
@@ -57,6 +80,7 @@ export default function Header() {
 
   return (
     <header className="flex items-center justify-between px-4 py-3 bg-white h-[100px]">
+
       <div className="flex items-center flex-1 justify-between">
         {(!currentUser || currentUser?.userType === "client") && (
           <Link href="/" className="">
@@ -155,7 +179,7 @@ export default function Header() {
         </nav>
       </div>
       <div className="flex items-center">
-        <div className="relative">
+        {/* <div className="relative">
           <Input
             type="search"
             placeholder="Пошук..."
@@ -164,7 +188,7 @@ export default function Header() {
           <div className="absolute inset-y-0 right-0 flex items-center pr-2">
             <Search color="#353535" />
           </div>
-        </div>
+        </div> */}
         {isLogedIn ? (
           <Button
             onClick={handleLogout}
